@@ -19,9 +19,14 @@ public class Controleur : MonoBehaviour
             Destroy(gameObject);
         }
     }
-    public void click(Vector2 v)
+    public void click(Ray ray)
     {
-        text.text = v.x + v.y+"";
+        
+        RaycastHit hit;
+        if (Physics.Raycast(ray, out hit))
+        {
+            text.text=hit.ToString();
+        }
     }
     // Update is called once per frame
     void Update()

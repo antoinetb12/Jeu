@@ -6,6 +6,7 @@ public class MouseManager : MonoBehaviour
 {
     // Start is called before the first frame update
     Controleur controleur;
+    private Ray ray;
     void Start()
     {
         controleur = Controleur.instance;
@@ -14,11 +15,10 @@ public class MouseManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Vector2 sourisCamera;
         if (Input.GetMouseButtonDown(0))
         {
-            sourisCamera= Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            Controleur.instance.click(sourisCamera);
+            ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            Controleur.instance.click(ray);
         }
     }
 }
