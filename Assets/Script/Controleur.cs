@@ -8,8 +8,10 @@ public class Controleur : MonoBehaviour
     public static Controleur instance=null;
     private Text text;
     private BoardManager boardManager;
+    private Joueur joueur;
+    bool deplacement;
     // Start is called before the first frame update
-    void Awake()
+    void Start()
     {
        // text=GameObject.Find("Text").GetComponent<Text>();
         if (instance == null)
@@ -23,14 +25,21 @@ public class Controleur : MonoBehaviour
         initGame();
         
     }
-    public void click(Ray ray)
+    public void setDeplacement(bool deplacement)
     {
-        print(ray); 
-        RaycastHit hit;
-        if (Physics.Raycast(ray, out hit))
+        this.deplacement = deplacement;
+    }
+    public void click(Vector3 position)
+    {
+        RaycastHit2D hit= Physics2D.Raycast(position, Vector2.zero);
+        if (hit.collider != null)
         {
-            text.text=hit.ToString();
+
+           hit.collider.gameObject.GetComponent<Lieu>().PrintName();
+           joueur.move(hit.collider.gameObject.GetComponent<Lieu>().getCenterPosition());
         }
+
+        
     }
     // Update is called once per frame
     void Update()
@@ -40,6 +49,10 @@ public class Controleur : MonoBehaviour
     void initGame()
     {
         boardManager.boardSetup();
-
+        joueur = GameObject.FindGameObjectWithTag("Player").GetComponent<Joueur>();
+    }
+    public void finDeplacement()
+    {
+       // print("fin");
     }
 }

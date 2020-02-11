@@ -6,7 +6,7 @@ public class MouseManager : MonoBehaviour
 {
     // Start is called before the first frame update
     Controleur controleur;
-    private Ray ray;
+    private Vector3 position;
     void Start()
     {
         controleur = Controleur.instance;
@@ -17,8 +17,9 @@ public class MouseManager : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-            ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            Controleur.instance.click(ray);
+            position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            
+            Controleur.instance.click(position);
         }
     }
 }
