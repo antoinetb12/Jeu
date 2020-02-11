@@ -17,10 +17,10 @@ public class Joueur : MonoBehaviour
         {
             return;
         }
-        print("debut deplacement " + onDeplacement);
         onDeplacement = true;
         StartCoroutine(smoothMovement(end));
-        onDeplacement = false;
+        
+       
         Controleur.instance.finDeplacement();
     }
 
@@ -43,6 +43,7 @@ public class Joueur : MonoBehaviour
             //Return and loop until sqrRemainingDistance is close enough to zero to end the function
             yield return null;
         }
+        onDeplacement = false;
     }
     // Update is called once per frame
     void Update()

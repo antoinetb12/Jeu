@@ -33,12 +33,12 @@ public class BoardManager : MonoBehaviour
             aintancier = lieux[index];
             lieux.RemoveAt(index);
             ancienCentre = aintancier.GetComponent<Lieu>().centerPositionBase;
-            aintancier.GetComponent<Lieu>().setCenterPosition(new Vector3(ancienCentre.x + (6f * i), ancienCentre.y, ancienCentre.z));
+            aintancier.GetComponent<Lieu>().centerPosition=new Vector3(ancienCentre.x + (6f * i), ancienCentre.y, ancienCentre.z);
             instance = Instantiate(aintancier, new Vector3(i*(6f), 0, 0f), Quaternion.identity);
             instance.transform.localScale = new Vector3(6f, 6f, 4f);
             instance.transform.SetParent(boardHolder);
         }
-
+        
             
     }
 }

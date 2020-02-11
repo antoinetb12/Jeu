@@ -96,7 +96,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nom: nom1
-  centerposition: {x: 0, y: 0, z: 0}
+  centerPositionBase: {x: 0, y: 0, z: 0}
+  centerPosition: {x: 1, y: 0, z: 0}
 --- !u!61 &5621251659880944596
 BoxCollider2D:
   m_ObjectHideFlags: 0
