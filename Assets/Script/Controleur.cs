@@ -7,10 +7,11 @@ public class Controleur : MonoBehaviour
 {
     public static Controleur instance=null;
     private Text text;
+    private BoardManager boardManager;
     // Start is called before the first frame update
     void Awake()
     {
-        text=GameObject.Find("Text").GetComponent<Text>();
+       // text=GameObject.Find("Text").GetComponent<Text>();
         if (instance == null)
         {
             instance = this;
@@ -18,10 +19,13 @@ public class Controleur : MonoBehaviour
         else{
             Destroy(gameObject);
         }
+        boardManager = GetComponent<BoardManager>();
+        initGame();
+        
     }
     public void click(Ray ray)
     {
-        
+        print(ray); 
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit))
         {
@@ -32,5 +36,10 @@ public class Controleur : MonoBehaviour
     void Update()
     {
         
+    }
+    void initGame()
+    {
+        boardManager.boardSetup();
+
     }
 }
