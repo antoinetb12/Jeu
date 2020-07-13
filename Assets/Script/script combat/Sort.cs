@@ -2,21 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Joueur : Personnage
+public class Sort : MonoBehaviour
 {
+    public int pdd = 1;
+    public int range=1;
     // Start is called before the first frame update
     void Start()
     {
         
     }
-    public void move(Vector3 end)
-    {
 
-        StartCoroutine(smoothMovement(end));
-        
-    }
-
-    
     // Update is called once per frame
     void Update()
     {

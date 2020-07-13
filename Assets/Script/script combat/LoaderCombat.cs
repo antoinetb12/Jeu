@@ -2,21 +2,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Joueur : Personnage
+public class LoaderCombat : MonoBehaviour
 {
+    public GameObject controleur;
+    public List<GameObject> joueurs;
     // Start is called before the first frame update
     void Start()
     {
-        
-    }
-    public void move(Vector3 end)
-    {
-
-        StartCoroutine(smoothMovement(end));
-        
+        if (ControleurCombat.instance == null)
+        {
+            Instantiate(controleur);
+        }
     }
 
-    
     // Update is called once per frame
     void Update()
     {
