@@ -34,7 +34,17 @@ public class BoardManagerCombat : MonoBehaviour
     {
         
     }
-
+    public void reinitDistance()
+    {
+        for (int x = 0; x < tailleX; x++)
+        {
+            for (int y = 0; y < tailleY; y++)
+            {
+                grid[y, x].distance = 0;
+                grid[y, x].visite = false;
+            }
+        }
+    }
     public void boardSetup()
     {
         boardHolder = new GameObject("Board").transform;
@@ -42,37 +52,198 @@ public class BoardManagerCombat : MonoBehaviour
         int index;
         Vector3 ancienCentre;
         GameObject instance;
-        grid = new Case[tailleX, tailleY];
+        grid = new Case[tailleY, tailleX];
         for (int x=0;x< tailleX; x++)
         {
             for(int y = 0; y < tailleY; y++)
             {
 
                 GameObject nobj = (GameObject)GameObject.Instantiate(sol);
-                nobj.transform.position = new Vector2(sol.transform.position.x + (1 * y), sol.transform.position.y + (1 * x));
+
+                nobj.transform.position = new Vector2(sol.transform.position.x + (1 * x), sol.transform.position.y + (1 * y));
                 nobj.transform.localScale= new Vector3(0.95f, 0.95f, 0.95f);
                 Case c=nobj.GetComponent<Case>();
-                c.setVariable(x, y, false);
-                grid[x,y] = c;
+                c.setVariable(x, y);
+                grid[y,x] = c;
 
                 nobj.gameObject.transform.parent = sol.transform.parent;
                 nobj.SetActive(true);
                 nobj.transform.SetParent(boardHolder);
             }
-        }/*
-        for (int i = 0; i < possibilite; i++)
-        {
-            index = Random.Range(0, cases.Count);
-            aintancier = cases[index];
-            cases.RemoveAt(index);
-            aintancier.GetComponent<Lieu>().centerPosition=new Vector3(ancienCentre.x + (6f * i), ancienCentre.y, ancienCentre.z);
-           
-        }*/
-        
-            
+        }
     }
-    public void caseDeplacement(Vector3 depart, int range)
+    
+    public void afficheMap(TextAsset t)
     {
-        grid[(int)depart.y, (int)depart.x].changeColor();
+        Debug.Log(t.text);
+        int l=0;
+        int i = 0;
+        int y=0;
+        int x=0;
+        string id="";
+        int tampon;
+        string charact;
+        grid = new Case[tailleY, tailleX];
+        boardHolder = new GameObject("Board").transform;
+        while (i < t.text.Length )
+        {
+            charact = t.text.Substring(i, 1);
+            if (charact != "," && charact != "/")
+            {
+                if (int.TryParse(charact,out tampon)) {
+                    id = id + charact;
+                }
+                
+            }
+            else
+            {
+                
+                GameObject nobj = (GameObject)GameObject.Instantiate(cases[int.Parse(id)]);
+                id = "";
+                nobj.transform.position = new Vector2(sol.transform.position.x + (1 * y), sol.transform.position.y + (-1 * x));
+                nobj.transform.localScale = new Vector3(0.95f, 0.95f, 0.95f);
+                Case c = nobj.GetComponent<Case>();
+                c.setVariable(y, x);
+                grid[x, y] = c;
+                nobj.gameObject.transform.parent = sol.transform.parent;
+                nobj.SetActive(true);
+                nobj.transform.SetParent(boardHolder);
+                y++;
+                if ( charact == "/")
+                {
+                    x++;
+                    y = 0;
+                }
+            }
+
+            i++;
+        }
+       /* 
+        GameObject aintancier;
+        int index;
+        Vector3 ancienCentre;
+        GameObject instance;
+        grid = new Case[tailleY, tailleX];
+        for (int x = 0; x < tailleX; x++)
+        {
+            for (int y = 0; y < tailleY; y++)
+            {
+
+                GameObject nobj = (GameObject)GameObject.Instantiate(sol);
+
+                nobj.transform.position = new Vector2(sol.transform.position.x + (1 * x), sol.transform.position.y + (1 * y));
+                nobj.transform.localScale = new Vector3(0.95f, 0.95f, 0.95f);
+                Case c = nobj.GetComponent<Case>();
+                c.setVariable(x, y, false);
+                grid[y, x] = c;
+
+                nobj.gameObject.transform.parent = sol.transform.parent;
+                nobj.SetActive(true);
+                nobj.transform.SetParent(boardHolder);
+            }
+        }*/
     }
+    public void AjouteMurAleatoire()
+    {
+
+    }
+    public List<Position> caseDeplacementPossible(Vector3 depart, Joueur j)
+    {
+        List<Position> casesPossible = new List<Position>();
+        List<Case> casesVisite = new List<Case>();
+        grid[(int)depart.y, (int)depart.x].precedent = null;
+        casesVisite.Add(grid[(int)depart.y, (int)depart.x]);
+        int iteration=0;
+
+        while (casesVisite.Count != 0)
+        {
+            //Debug.Log(casesVisite[0].distance + " , " + casesVisite[0].getY() + ", " + casesVisite[0].getX());
+          // Debug.Log("position" + casesVisite[0].getX() + ", " + casesVisite[0].getY());
+           //Debug.Log(grid[casesVisite[0].getY(), casesVisite[0].getX()].distance);
+            if (grid[casesVisite[0].getY(), casesVisite[0].getX()].mur || contient(casesPossible, casesVisite[0].getX(), casesVisite[0].getY()) || grid[casesVisite[0].getY(), casesVisite[0].getX()].visite || grid[casesVisite[0].getY(), casesVisite[0].getX()].distance > j.getPm())
+            {
+               // Debug.Log("remove a cause d'un prob");
+                casesVisite.RemoveAt(0);
+            }
+            else
+            {
+                if (casesVisite[0].distance != 0 && casesVisite[0].distance <= j.getPm())
+                {
+                    //Debug.Log("ajout au position");
+                    casesPossible.Add(new Position(casesVisite[0].getX(), casesVisite[0].getY(), casesVisite[0].distance, casesVisite[0].precedent));
+                }
+
+                if (casesVisite[0].getY() + 1 >= 0 && casesVisite[0].getY() + 1 < tailleY && !grid[(casesVisite[0].getY() + 1), casesVisite[0].getX()].visite)
+                {
+                    grid[(casesVisite[0].getY() + 1), casesVisite[0].getX()].distance = grid[casesVisite[0].getY(), casesVisite[0].getX()].distance + 1;
+                    grid[(casesVisite[0].getY() + 1), casesVisite[0].getX()].precedent = grid[casesVisite[0].getY(), casesVisite[0].getX()];
+                    casesVisite.Add(grid[casesVisite[0].getY() + 1, casesVisite[0].getX()]);
+                    //Debug.Log("ajout monte");
+                }
+                
+                 if (casesVisite[0].getY() - 1 >= 0 && casesVisite[0].getY() - 1 < tailleY && !grid[(casesVisite[0].getY() - 1), casesVisite[0].getX()].visite)
+                 {
+                    grid[(casesVisite[0].getY() - 1), casesVisite[0].getX()].distance = grid[casesVisite[0].getY(), casesVisite[0].getX()].distance + 1;
+                    grid[(casesVisite[0].getY() - 1), casesVisite[0].getX()].precedent = grid[casesVisite[0].getY(), casesVisite[0].getX()];
+                   casesVisite.Add(grid[casesVisite[0].getY() - 1, casesVisite[0].getX()]);
+                    //Debug.Log("ajout descend");
+                }
+                 if (casesVisite[0].getX() + 1 >= 0 && casesVisite[0].getX() + 1 < tailleX && !grid[(casesVisite[0].getY()), casesVisite[0].getX() + 1].visite)
+                 {
+                    grid[(casesVisite[0].getY()), casesVisite[0].getX()+1].distance = grid[casesVisite[0].getY(), casesVisite[0].getX()].distance + 1;
+                    grid[(casesVisite[0].getY()), casesVisite[0].getX() + 1].precedent= grid[casesVisite[0].getY(), casesVisite[0].getX()];
+                    casesVisite.Add(grid[casesVisite[0].getY(), casesVisite[0].getX()+1]);
+                   // Debug.Log("ajout droite");
+
+                }
+                 if (casesVisite[0].getX() - 1 >= 0 && casesVisite[0].getX() - 1 < tailleX && !grid[(casesVisite[0].getY()), casesVisite[0].getX() - 1].visite)
+                 {
+                    grid[(casesVisite[0].getY()), casesVisite[0].getX() - 1].distance = grid[casesVisite[0].getY(), casesVisite[0].getX()].distance + 1;
+                    grid[(casesVisite[0].getY()), casesVisite[0].getX() - 1].precedent = grid[casesVisite[0].getY(), casesVisite[0].getX()];
+                    casesVisite.Add(grid[casesVisite[0].getY(), casesVisite[0].getX() - 1]);
+                    //Debug.Log("ajout gauche");
+                }
+                casesVisite[0].visite = true;
+                casesVisite.RemoveAt(0);
+
+
+                //}
+            }
+        }
+        return casesPossible;
+    }
+    public bool contient(List<Position> casesPossible, int x, int y)
+    {
+        foreach(Position pos in casesPossible)
+        {
+            if (pos.posX == x && pos.posY == y)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+    public void changeColor(List<Position> posPossible)
+    {
+        foreach (Position pos in posPossible)
+        {
+            grid[pos.posY, pos.posX].changeColor();
+        }
+       
+        
+    }
+    public void reinitColor(List<Position> posPossible)
+    {
+        if (posPossible == null)
+        {
+            return;
+        }
+        foreach (Position pos in posPossible)
+        {
+            grid[pos.posY, pos.posX].initColor();
+        }
+
+
+    }
+    
 }

@@ -9,17 +9,24 @@ public class ControleurCombat : MonoBehaviour
     private Text text;
     private BoardManagerCombat boardManager;
     public List<GameObject> joueurs;
+    public List<GameObject> ennemies;
     private List<GameObject> joueursIntanciate=new List<GameObject>();
+    private List<Joueur> joueursCIntanciate = new List<Joueur>();
+    private List<GameObject> ennemisInstanciate = new List<GameObject>();
     private GameObject joueur;
     private Joueur joueurc;
+    private Ennemi ennemic;
+    public List<TextAsset> listMap;
+    bool quiLeTour=true;
     bool deplacement = false;
     private int indexJoueur;
+    List<Position> positionDeplacable;
     // Start is called before the first frame update
     void Start()
     {
 
         
-        print(instance);
+
        // text=GameObject.Find("Text").GetComponent<Text>();
         if (instance == null)
         {
@@ -37,28 +44,50 @@ public class ControleurCombat : MonoBehaviour
     {
         this.deplacement = deplacement;
     }
-    public void click(Vector3 position)
-    {
-        RaycastHit2D hit= Physics2D.Raycast(position, Vector2.zero);
-        if (hit.collider != null && !deplacement)
-        {
-            deplacement = true;
-           //hit.collider.gameObject.GetComponent<Case>().PrintName();
-           // print("au click : " + hit.collider.gameObject.GetComponent<Lieu>().getCenterPosition());
-           Case cas= (Case)hit.collider.gameObject.GetComponent<Case>();
-            //  print(cas);
-            joueurc.move(new Vector3(cas.getY(), cas.getX(), 0f));
-        }
 
-        
-    }
     public void click(Case c)
     {
         if (!deplacement)
         {
-            deplacement = true;
-            joueurc.move(new Vector3(c.getY(), c.getX(), 0f));
+            
+            //Debug.Log("try deplace");
+            //Debug.Log(positionDeplacable);
+            //Debug.Log("Clique ici " + c.getX() + ", " + c.getY());
+            //affiche(positionDeplacable);
+            if (boardManager.contient(positionDeplacable, c.getX(), c.getY()))
+            {
+                exitCase(c);
+                deplacement = true;
+               // Debug.Log(boardManager.grid[c.getY(), c.getX()].distance);
+                joueurc.setPm(joueurc.getPm() - boardManager.grid[c.getY(), c.getX()].distance);
+                List<Case> chemin = new List<Case>();
+                creerChemin(c,chemin);
+                chemin.Reverse();
+                joueurc.move(chemin);
+                
+            }
+            
         }
+    }
+    public void creerChemin(Case c, List<Case> cases)
+    {
+        if (c.precedent != null)
+        {
+            cases.Add(c);
+            creerChemin(c.precedent, cases);
+        }
+
+    }
+    
+    public void affiche(List<Position> posPossible)
+    {
+        
+        foreach (Position pos in posPossible)
+        {
+            Debug.Log(pos.posX + ", " + pos.posY);
+        }
+
+
     }
     // Update is called once per frame
     void Update()
@@ -67,42 +96,136 @@ public class ControleurCombat : MonoBehaviour
     }
     void initGame()
     {
-        Joueur j;
         foreach(GameObject g in joueurs)
         {
             print(g);
             GameObject nobj = (GameObject)GameObject.Instantiate(g);
             joueursIntanciate.Add(nobj);
-            j = nobj.GetComponent<Joueur>();
+            joueursCIntanciate.Add(joueurc);
             nobj.SetActive(true);
         }
         indexJoueur = 0;
         joueur = joueursIntanciate[indexJoueur];
         joueurc = joueur.GetComponent<Joueur>();
+        initEnnemies();
 
+        boardManager.afficheMap(listMap[0]);
 
-        boardManager.boardSetup();
+        debutTour();
+
         //joueur = GameObject.FindGameObjectWithTag("Player").GetComponent<Joueur>();
+    }
+    public void initEnnemies()
+    {
+
+        GameObject nobj = (GameObject)GameObject.Instantiate(ennemies[0]);
+
+        nobj.transform.position = new Vector2((1 * 10), -(1 * 10));
+        nobj.transform.localScale = new Vector3(1f, 1f, 1f);
+        Ennemi e = nobj.GetComponent<Ennemi>();
+        ennemic = e;
+        ennemic.joueurs.Add(joueurc) ;
+        ennemisInstanciate.Add(nobj);
+        nobj.SetActive(true);
+
+    }
+    public void changeCaseRecursif(Case c)
+    {
+        
+        if (c.precedent != null)
+        {
+            c.changeRed();
+            changeCaseRecursif(c.precedent);
+
+        }
+    }
+    public void exitCaseRecursif(Case c)
+    {
+        
+        if (c.precedent != null)
+        {
+            c.exit();
+            exitCaseRecursif(c.precedent);
+
+        }
+    }
+    public void exitCase(Case c)
+    {
+        if (!deplacement)
+        {
+            if (boardManager.contient(positionDeplacable, c.getX(), c.getY()))
+            {
+                exitCaseRecursif(c);
+            }
+        }
+    }
+    public void hover(Case c)
+    {
+        if (!deplacement) { 
+            if (boardManager.contient(positionDeplacable, c.getX(), c.getY()))
+            {
+                changeCaseRecursif(c);
+            }
+            else
+            {
+                c.changeRed();
+            }
+        }
+
     }
     public void finDeplacement()
     {
         deplacement = false;
+        gereDeplacementPossible();
     }
     public void finTour()
     {
-        indexJoueur++;
-        if (indexJoueur == 4)
+        quiLeTour = !quiLeTour;
+        if (quiLeTour)
         {
-            indexJoueur = 0;
+            Debug.Log("tour joueur");
+        
+            indexJoueur++;
+            if (indexJoueur == 4)
+            {
+                indexJoueur = 0;
+            }
+            joueur = joueursIntanciate[indexJoueur];
+            joueurc = joueur.GetComponent<Joueur>();
+            debutTour();
         }
-        joueur = joueursIntanciate[indexJoueur];
-        joueurc = joueur.GetComponent<Joueur>();
-        debutTour();
+        else
+        {
+            Debug.Log("tour Ennemi");
+            //ennemic = ennemisInstanciate[0].GetComponent<Ennemi>();
+            debutTourEnnemi();
+        }
 
+        
+
+    }
+    public void debutTourEnnemi()
+    {
+        Debug.Log("debut tour ennemi");
+        ennemic.setPm(ennemic.pmOrigine);
+       Debug.Log( boardManager.grid[0, 0]);
+        ennemic.joue(boardManager.grid,boardManager.tailleX,boardManager.tailleY);
+        finTour();
     }
     public void debutTour()
     {
+        Debug.Log("debut tour ally");
+        joueurc.setPm(joueurc.pmOrigine);
+        gereDeplacementPossible();
+       
+    }
+    public void gereDeplacementPossible()
+    {
+        boardManager.reinitDistance();
+        boardManager.reinitColor(positionDeplacable);
         Vector3 posJoueur = joueurc.transform.position;
-        boardManager.caseDeplacement(posJoueur, 1);
+        posJoueur.y = posJoueur.y * -1;
+        positionDeplacable = boardManager.caseDeplacementPossible(posJoueur, joueurc);
+        boardManager.changeColor(positionDeplacable);
     }
 }

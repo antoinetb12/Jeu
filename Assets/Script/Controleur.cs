@@ -37,7 +37,7 @@ public class Controleur : MonoBehaviour
 
            hit.collider.gameObject.GetComponent<Lieu>().PrintName();
            // print("au click : " + hit.collider.gameObject.GetComponent<Lieu>().getCenterPosition());
-           joueur.move(hit.collider.gameObject.GetComponent<Lieu>().getCenterPosition());
+          // joueur.move(hit.collider.gameObject.GetComponent<Lieu>().getCenterPosition());
         }
 
         
