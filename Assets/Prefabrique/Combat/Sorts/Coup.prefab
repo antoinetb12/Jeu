@@ -44,8 +44,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d78f4f5fc6c987d4cab4e9e5311e6062, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  nom: dague
   pdd: 5
   range: 1
+  cout: 3
 --- !u!212 &4305176178120565690
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -85,7 +87,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300038, guid: fbe1e7b94bb1a4a099d5bcb15a00141c, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 025197893f9591145ad0c5618b91a668, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

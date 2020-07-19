@@ -17,8 +17,11 @@ public class ControleurCombat : MonoBehaviour
     private Joueur joueurc;
     private Ennemi ennemic;
     public List<TextAsset> listMap;
+    private GestionAffichageSort gestionAffichageSort;
     bool quiLeTour=true;
     bool deplacement = false;
+    bool choisiSort = false;
+    private Sort sortSelectionne;
     private int indexJoueur;
     List<Position> positionDeplacable;
     // Start is called before the first frame update
@@ -36,6 +39,7 @@ public class ControleurCombat : MonoBehaviour
             Destroy(gameObject);
         }
         boardManager = GetComponent<BoardManagerCombat>();
+        gestionAffichageSort = new GestionAffichageSort();
         initGame();
         
     }
@@ -44,27 +48,41 @@ public class ControleurCombat : MonoBehaviour
     {
         this.deplacement = deplacement;
     }
-
+    public void selectionneSort(Sort s)
+    {
+        if (sortSelectionne.nom == s.nom)
+        {
+            choisiSort = false;
+        }
+        else
+        {
+            choisiSort = true;
+            sortSelectionne = s;
+        }
+    }
     public void click(Case c)
     {
         if (!deplacement)
         {
-            
-            //Debug.Log("try deplace");
-            //Debug.Log(positionDeplacable);
-            //Debug.Log("Clique ici " + c.getX() + ", " + c.getY());
-            //affiche(positionDeplacable);
-            if (boardManager.contient(positionDeplacable, c.getX(), c.getY()))
+
+            if (choisiSort)
             {
-                exitCase(c);
-                deplacement = true;
-               // Debug.Log(boardManager.grid[c.getY(), c.getX()].distance);
-                joueurc.setPm(joueurc.getPm() - boardManager.grid[c.getY(), c.getX()].distance);
-                List<Case> chemin = new List<Case>();
-                creerChemin(c,chemin);
-                chemin.Reverse();
-                joueurc.move(chemin);
-                
+                joueurc.lanceSort(sortSelectionne);
+            }
+            else
+            {
+                if (boardManager.contient(positionDeplacable, c.getX(), c.getY()))
+                {
+                    exitCase(c);
+                    deplacement = true;
+                    // Debug.Log(boardManager.grid[c.getY(), c.getX()].distance);
+                    joueurc.setPm(joueurc.getPm() - boardManager.grid[c.getY(), c.getX()].distance);
+                    List<Case> chemin = new List<Case>();
+                    creerChemin(c, chemin);
+                    chemin.Reverse();
+                    joueurc.move(chemin);
+
+                }
             }
             
         }
@@ -101,12 +119,12 @@ public class ControleurCombat : MonoBehaviour
             print(g);
             GameObject nobj = (GameObject)GameObject.Instantiate(g);
             joueursIntanciate.Add(nobj);
-            joueursCIntanciate.Add(joueurc);
+            joueursCIntanciate.Add(nobj.GetComponent<Joueur>());
             nobj.SetActive(true);
         }
         indexJoueur = 0;
         joueur = joueursIntanciate[indexJoueur];
-        joueurc = joueur.GetComponent<Joueur>();
+        joueurc = joueursCIntanciate[indexJoueur];
         initEnnemies();
 
         boardManager.afficheMap(listMap[0]);
@@ -124,7 +142,10 @@ public class ControleurCombat : MonoBehaviour
         nobj.transform.localScale = new Vector3(1f, 1f, 1f);
         Ennemi e = nobj.GetComponent<Ennemi>();
         ennemic = e;
-        ennemic.joueurs.Add(joueurc) ;
+        foreach(Joueur j in joueursCIntanciate)
+        {
+            ennemic.joueurs.Add(j);
+        }
         ennemisInstanciate.Add(nobj);
         nobj.SetActive(true);
 
@@ -215,6 +236,9 @@ public class ControleurCombat : MonoBehaviour
     public void debutTour()
     {
         Debug.Log("debut tour ally");
+        gestionAffichageSort.j = joueurc;
+        Debug.Log(gestionAffichageSort.j.sorts);
+        gestionAffichageSort.afficheSort();
         joueurc.setPm(joueurc.pmOrigine);
         gereDeplacementPossible();
        

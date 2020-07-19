@@ -7,6 +7,8 @@ public class Ennemi : Personnage
     private AlgoDeplacement algo;
     public List<Joueur> joueurs;
     private Case[,] grid;
+    private Joueur jChoisi=null;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -22,7 +24,6 @@ public class Ennemi : Personnage
     {
         this.grid = grid;
         List<Case> cheminChoisi=null;
-        Joueur jChoisi=null;
         List<Case> chemin;
         foreach (Joueur j in joueurs)
         {
@@ -57,16 +58,15 @@ public class Ennemi : Personnage
             }
             
         }
-        chemin.Count-1 > getPm()
 
 
-        chemin.RemoveAt(chemin.Count - 1);
-        while (chemin.Count > getPm())
+        cheminChoisi.RemoveAt(cheminChoisi.Count - 1);
+        while (cheminChoisi.Count > getPm())
         {
-            chemin.RemoveAt(chemin.Count - 1);
+            cheminChoisi.RemoveAt(cheminChoisi.Count - 1);
         }
         
-        StartCoroutine(smoothMovement(chemin));
+        StartCoroutine(smoothMovement(cheminChoisi));
     }
     int GetDistance(Case nodeA, Case nodeB)
     {
@@ -81,12 +81,12 @@ public class Ennemi : Personnage
     public override void finMouvement()
     {
         Case startNode = grid[Mathf.RoundToInt(-transform.position.y), Mathf.RoundToInt(transform.position.x)];
-        Case targetNode = grid[Mathf.RoundToInt(-joueurs[0].transform.position.y), Mathf.RoundToInt(joueurs[0].transform.position.x)];
+        Case targetNode = grid[Mathf.RoundToInt(-jChoisi.transform.position.y), Mathf.RoundToInt(jChoisi.transform.position.x)];
         Sort s = sorts[0].GetComponent<Sort>();
         if ( GetDistance(startNode, targetNode) <= s.range)
         {
             GetComponent<Animator>().SetTrigger("attaque1");
-            joueurs[0].recoitAttaque(s.pdd);
+            jChoisi.recoitAttaque(s.pdd);
         }
     }
 }

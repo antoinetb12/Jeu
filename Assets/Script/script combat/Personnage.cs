@@ -7,6 +7,7 @@ public abstract class Personnage : MonoBehaviour
     public int pdv = 20;
     public float vitesse = 0.1f;
     public int niveau;
+    public int pa = 6;
     public int pmOrigine = 3;
     private int pm;
     public List<GameObject> sorts;

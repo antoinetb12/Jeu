@@ -22,6 +22,14 @@ public class Joueur : Personnage
     {
         
     }
+    public void lanceSort(Sort s)
+    {
+        if (s.cout <= pa)
+        {
+            pa=pa - s.cout;
+
+        }
+    }
     public void recoitAttaque(int montant)
     {
         pdv = pdv - montant;

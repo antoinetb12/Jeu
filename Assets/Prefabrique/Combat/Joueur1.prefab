@@ -117,6 +117,7 @@ MonoBehaviour:
   pdv: 20
   vitesse: 3
   niveau: 0
+  pa: 6
   pmOrigine: 10
-  Sorts:
+  sorts:
   - {fileID: 4305176178120565689, guid: 13aa51f6f3244944a8fa2cd2cf417382, type: 3}

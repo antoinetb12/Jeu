@@ -4,17 +4,14 @@ using UnityEngine;
 
 public class Sort : MonoBehaviour
 {
+    public string nom;
     public int pdd = 1;
-    public int range=1;
+    public int range = 1;
+    public int cout = 3;
     // Start is called before the first frame update
-    void Start()
+    void OnMouseUp()
     {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        ControleurCombat.instance.selectionneSort(this);
     }
 }
