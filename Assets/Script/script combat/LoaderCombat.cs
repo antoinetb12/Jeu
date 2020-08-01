@@ -33,12 +33,17 @@ public class LoaderCombat : MonoBehaviour
     }
     public void changeResolution(int pixel,int width,int heigth)
     {
+        Screen.SetResolution(width, heigth, Screen.fullScreen);
         resolutionx = width;
         resolutiony = heigth;
         PixelPerfectCamera p=GetComponentInParent<PixelPerfectCamera>();
         p.assetsPPU = pixel;
         p.refResolutionX = width;
         p.refResolutionY = heigth;
+    }
+    public void changeTypeFullScreen(FullScreenMode fullScreenMode)
+    {
+        Screen.fullScreenMode = fullScreenMode;
     }
     // Update is called once per frame
     void Update()
