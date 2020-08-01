@@ -15,4 +15,9 @@ public class Position
         this.distance = distance;
         this.precedent = precedent;
     }
+
+    public void toString()
+    {
+        Debug.Log("position : " + posX + ", " + posY);
+    }
 }

@@ -11,10 +11,12 @@ public class Case : MonoBehaviour
     private int y;
     private int effet;
     public int distance=0;
+    public int distanceSort = 0;
     public Case precedent;
     public bool visite=false;
     public int gCost; 
     public int hCost;
+    public Personnage perso=null;
     Color m_OriginalColor;
     Color lastColor;
     Color m_MouseOverColor = Color.red;
@@ -38,6 +40,7 @@ public class Case : MonoBehaviour
     }
     public void changeRed()
     {
+        initRenderer();
         m_Renderer.material.color = Color.red;
     }
 
@@ -58,11 +61,15 @@ public class Case : MonoBehaviour
         lastColor = m_OriginalColor;
 
     }
-    public void changeColor()
+    public void changeColor(Color color)
     {
         initRenderer();
-        lastColor = Color.yellow;
-        m_Renderer.material.color = Color.yellow;
+        lastColor = color;
+        m_Renderer.material.color = color;
+    }
+    public void changeColorHover(Color color)
+    {
+        m_Renderer.material.color = color;
     }
     private void OnMouseUp()
     {
@@ -113,6 +120,11 @@ public class Case : MonoBehaviour
     void Update()
     {
         
+    }
+    public bool equals(Case c)
+    {
+        Debug.Log("result = " + (c.x == this.x && c.y == this.y));
+        return c.x == this.x && c.y == this.y;
     }
 
 

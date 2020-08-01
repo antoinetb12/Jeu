@@ -22,17 +22,20 @@ public class Joueur : Personnage
     {
         
     }
-    public void lanceSort(Sort s)
+    public bool lanceSort(Sort s)
     {
         if (s.cout <= pa)
         {
-            pa=pa - s.cout;
+            pa= pa - s.cout;
+            return true;
 
         }
+        return false;
     }
-    public void recoitAttaque(int montant)
+    public override void recoitAttaque(Sort s)
     {
-        pdv = pdv - montant;
+        base.recoitAttaque(s);
+        pdv = pdv - s.pdd;
         
         if (pdv <= 0)
         {
@@ -44,6 +47,12 @@ public class Joueur : Personnage
 
     public override void finMouvement()
     {
+        Debug.Log("fin position " + transform.position.x + ", " + transform.position.y);
         //throw new System.NotImplementedException();
+    }
+
+    public override int getStatusPersonnage()
+    {
+        return 0;
     }
 }

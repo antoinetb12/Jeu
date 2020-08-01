@@ -21,6 +21,7 @@ public class AsStar : AlgoDeplacement
 		Case startNode = grid[Mathf.RoundToInt(-startPos.y), Mathf.RoundToInt(startPos.x)];
 		Case targetNode = grid[Mathf.RoundToInt(-targetPos.y), Mathf.RoundToInt(targetPos.x)];
 		startNode.precedent = null;
+		startNode.perso = null;
 		List<Case> openSet = new List<Case>();
 		HashSet<Case> closedSet = new HashSet<Case>();
 		openSet.Add(startNode);
@@ -47,8 +48,8 @@ public class AsStar : AlgoDeplacement
 			}
 
 			foreach (Case neighbour in GetNeighbours(grid,node,dimX,dimY))
-			{
-				if (neighbour.mur || closedSet.Contains(neighbour))
+			{ 
+				if (neighbour.mur || (neighbour.perso!=null && neighbour!=targetNode)  || closedSet.Contains(neighbour))
 				{
 					continue;
 				}

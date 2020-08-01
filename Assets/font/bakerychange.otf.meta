@@ -1,0 +1,23 @@
+fileFormatVersion: 2
+guid: 5aece29462c8ed548bf6206a6e5386c0
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 300
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Bakery
+  fontNames:
+  - Bakerychange
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: a69b136dedd6b644d852ac522d2af8ed, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

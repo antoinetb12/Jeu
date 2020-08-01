@@ -12,13 +12,19 @@ public class Ennemi : Personnage
     // Start is called before the first frame update
     void Start()
     {
-        algo = GetComponent<AlgoDeplacement>();
+        if (algo == null)
+        {
+            algo = GetComponent<AlgoDeplacement>();
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
         
+    }
+    private void Awake()
+    {
     }
     public void joue(Case[,] grid, int dimX, int dimY)
     {
@@ -27,8 +33,13 @@ public class Ennemi : Personnage
         List<Case> chemin;
         foreach (Joueur j in joueurs)
         {
+            Debug.Log("joueur " + j);
             if (j.pdv > 0)
             {
+                if (algo == null)
+                {
+                    algo = GetComponent<AlgoDeplacement>();
+                }
                 chemin = algo.FindPath(transform.position, j.transform.position, grid, dimX, dimY);
             }
             else
@@ -72,10 +83,8 @@ public class Ennemi : Personnage
     {
         int dstX = Mathf.Abs(nodeA.getX() - nodeB.getX());
         int dstY = Mathf.Abs(nodeA.getY() - nodeB.getY());
-
-        if (dstX > dstY)
-            return dstY + (dstX - dstY);
-        return dstX +(dstY - dstX);
+        Debug.Log("get distance : " + dstX + ", " + dstY);
+        return dstX+ dstY;
     }
 
     public override void finMouvement()
@@ -86,7 +95,28 @@ public class Ennemi : Personnage
         if ( GetDistance(startNode, targetNode) <= s.range)
         {
             GetComponent<Animator>().SetTrigger("attaque1");
-            jChoisi.recoitAttaque(s.pdd);
+            jChoisi.recoitAttaque(s);
         }
+        ControleurCombat.instance.finTour();
+    }
+    public override void recoitAttaque(Sort s)
+    {
+        base.recoitAttaque(s);
+        if (s != null) { 
+        pdv = pdv - s.pdd;
+        Debug.Log("ennemy recoit attaque de "+s.pdd+" ouch plus que "+pdv );
+        
+            if (pdv <= 0)
+            {
+
+           
+            
+            }
+        }
+    }
+
+    public override int getStatusPersonnage()
+    {
+        return 1;
     }
 }

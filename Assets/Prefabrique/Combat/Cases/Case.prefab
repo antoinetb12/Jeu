@@ -29,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 4362712041360857224}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.87, y: 0.87, z: 0.87}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -77,9 +77,9 @@ SpriteRenderer:
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
-  m_DrawMode: 0
+  m_DrawMode: 2
   m_Size: {x: 1, y: 1}
-  m_AdaptiveModeThreshold: 0.5
+  m_AdaptiveModeThreshold: 1
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
@@ -103,8 +103,8 @@ BoxCollider2D:
     pivot: {x: 0.5, y: 0.5}
     oldSize: {x: 1, y: 1}
     newSize: {x: 1, y: 1}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
+    adaptiveTilingThreshold: 1
+    drawMode: 2
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
@@ -124,6 +124,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nom: case1
   mur: 0
+  distance: 0
+  distanceSort: 0
+  precedent: {fileID: 0}
+  visite: 0
+  gCost: 0
+  hCost: 0
+  perso: {fileID: 0}
 --- !u!114 &4362712041360857223
 MonoBehaviour:
   m_ObjectHideFlags: 0
