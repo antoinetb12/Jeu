@@ -348,6 +348,10 @@ public class ControleurCombat : MonoBehaviour
             Debug.Log(gestionAffichageSort.j.sorts);
             gestionAffichageSort.afficheSort();
             joueurc.setPm(joueurc.pmOrigine);
+            choisiSort = false;
+            sortSelectionne = null;
+            boardManager.reinitColor(positionAttaquable);
+            boardManager.reinitDistanceSort();
             reinitialiseAffichageDeplacement();
             gereDeplacementPossible();
         }

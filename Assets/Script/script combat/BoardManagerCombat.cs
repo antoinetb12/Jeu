@@ -355,28 +355,22 @@ public class BoardManagerCombat : MonoBehaviour
                 y += incrmY;
                 result += step * 2;
             }
-            if (bloqueLdv(grid[y, p1.getX() + incrmX]) && grid[y, p1.getX() + incrmX].perso == null || bloqueLdv(grid[y, p1.getX() + incrmX]) && grid[y, p1.getX() + incrmX].perso != null && grid[y, p1.getX() + incrmX] != p2)
-            {
-                return false;
-            }
+            
             for (x = p1.getX() + incrmX; x != p2.getX(); x += incrmX)
             {
                 result -= ratio * 2;
-
-                while (result < 0)
-                {
-                    if (bloqueLdv(grid[y, x]) && grid[y, x].perso == null || bloqueLdv(grid[y, x]) && grid[y, x].perso != null && grid[y, x] != p2)
-                    {
-                        return false;
-                    }
-                    tuiles.Add(grid[y, x]);
-                    result += step * 2;
-                    y += incrmY;
-                }
                 if (bloqueLdv(grid[y, x]) && grid[y, x].perso == null || bloqueLdv(grid[y, x]) && grid[y, x].perso != null && grid[y, x] != p2)
                 {
                     return false;
                 }
+                while (result < 0)
+                {
+                    
+                    tuiles.Add(grid[y, x]);
+                    result += step * 2;
+                    y += incrmY;
+                }
+               
                 tuiles.Add(grid[y, x]);
                 if (result == 0)
                 {
@@ -394,27 +388,22 @@ public class BoardManagerCombat : MonoBehaviour
             step = dy;
             result = step;
             result -= ratio;
-            if (bloqueLdv(grid[p1.getY() + incrmY, x]) && grid[p1.getY() + incrmY, x].perso == null || bloqueLdv(grid[p1.getY() + incrmY, x]) && grid[p1.getY() + incrmY, x].perso != null && grid[p1.getY() + incrmY, x] != p2)
-            {
-                return false;
-            }
+            
             for (y = p1.getY() + incrmY; y != p2.getY(); y += incrmY)
             {
+                if (bloqueLdv(grid[p1.getY() + incrmY, x]) && grid[p1.getY() + incrmY, x].perso == null || bloqueLdv(grid[p1.getY() + incrmY, x]) && grid[p1.getY() + incrmY, x].perso != null && grid[p1.getY() + incrmY, x] != p2)
+                {
+                    return false;
+                }
                 result -= ratio * 2;
                 while (result < 0)
                 {
-                    if (bloqueLdv(grid[y, x]) && grid[y, x].perso == null || bloqueLdv(grid[y, x]) && grid[y, x].perso != null && grid[y, x] != p2)
-                    {
-                        return false;
-                    }
+                   
                     tuiles.Add(grid[y, x]);
                     result += step * 2;
                     x += incrmX;
                 }
-                if (bloqueLdv(grid[y, x]) && grid[y, x].perso==null || bloqueLdv(grid[y, x]) && grid[y, x].perso != null && grid[y, x]!= p2)
-                {
-                    return false;
-                }
+                
                 tuiles.Add(grid[y, x]);
                 if (result == 0)
                 {
