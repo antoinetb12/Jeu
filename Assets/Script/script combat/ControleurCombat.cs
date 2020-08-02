@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class ControleurCombat : MonoBehaviour
 {
@@ -24,12 +25,11 @@ public class ControleurCombat : MonoBehaviour
     List<Position> positionAttaquable;
     Case caseHover=null;
     List<Position> rayonAction = null;
-    List<GameObject> personnages = new List<GameObject>();
+    List<Personnage> personnages = new List<Personnage>();
     // Start is called before the first frame update
     void Start()
     {
 
-        
 
        // text=GameObject.Find("Text").GetComponent<Text>();
         if (instance == null)
@@ -41,7 +41,8 @@ public class ControleurCombat : MonoBehaviour
         }
         boardManager = GetComponent<BoardManagerCombat>();
         gestionAffichageSort = new GestionAffichageSort();
-        initGame();
+        //initGame();
+        loadSave();
         
     }
 
@@ -98,10 +99,9 @@ public class ControleurCombat : MonoBehaviour
             {
                 if (boardManager.contient(positionAttaquable, c.getX(), c.getY()))
                 {
-                    
                     if (joueurc.lanceSort(sortSelectionne))
                     {
-                        foreach(Case ca in boardManager.getAllCase( rayonAction))
+                        foreach(Case ca in boardManager.getAllCase(rayonAction))
                         {
                             if (ca.perso != null)
                             {
@@ -116,12 +116,10 @@ public class ControleurCombat : MonoBehaviour
                                         Debug.Log(e.GetComponent<Ennemi>().pdv);
                                         if (e.GetComponent<Ennemi>() == ca.perso)
                                         {
-                                            Debug.Log("remove ennemi");
                                             ennemic = null;
                                             Destroy(e);
                                         }
                                     }
-                                    Debug.Log(ca.perso);
                                     ca.perso = null;
 
                                 }
@@ -180,18 +178,46 @@ public class ControleurCombat : MonoBehaviour
     {
         
     }
-    void initGame()
+    public void loadSave()
+    {
+        ProgressionData data = SaveSystem.LoadProgression();
+        List<GameObject> joueurChoisi = new List<GameObject>();
+        if (data != null)
+        {
+            foreach(string nom in data.personnages)
+            {
+                joueurChoisi.Add(findJoueur(nom));
+            }
+        }
+        else
+        {
+            joueurChoisi.Add(findJoueur("j1"));
+        }
+        initGame(joueurChoisi);
+        
+    }
+    public GameObject findJoueur(string name) {
+        foreach(GameObject g in joueurs)
+        {
+            Personnage p=g.GetComponent<Personnage>();
+            if (p.nom == name)
+            {
+                return g;
+            }
+        }
+        return null;
+    }
+    void initGame(List<GameObject> joueurChoisi)
     {
         boardManager.afficheMap(listMap[0]);
-        foreach (GameObject g in joueurs)
+        foreach (GameObject g in joueurChoisi)
         {
             print(g);
             GameObject nobj = (GameObject)GameObject.Instantiate(g);
-            joueursIntanciate.Add(nobj);
             joueursCIntanciate.Add(nobj.GetComponent<Joueur>());
             boardManager.ajoutePerso(nobj.transform.position, nobj.GetComponent<Joueur>());
             nobj.SetActive(true);
-            personnages.Add(nobj);
+            personnages.Add(nobj.GetComponent<Personnage>());
         }
         indexJoueur = 0;
         joueurc = joueursCIntanciate[indexJoueur];
@@ -204,6 +230,21 @@ public class ControleurCombat : MonoBehaviour
         debutTour();
 
         //joueur = GameObject.FindGameObjectWithTag("Player").GetComponent<Joueur>();
+    }
+    public void SaveAll()
+    {
+        List<string> playerName = new List<string>();
+        foreach(Personnage p in personnages)
+        {
+
+            if (p.getStatusPersonnage() == 0)
+            {
+                playerName.Add(p.nom);
+                p.SavePlayer();
+            }
+
+        }
+        SaveSystem.SaveProgression(playerName, 0);
     }
     public void initEnnemies()
     {
@@ -221,7 +262,7 @@ public class ControleurCombat : MonoBehaviour
         ennemisInstanciate.Add(nobj);
         boardManager.ajoutePerso(e.transform.position, e);
         nobj.SetActive(true);
-        personnages.Add(nobj);
+        personnages.Add(e);
 
     }
     public void changeCaseRecursif(Case c)
@@ -315,9 +356,9 @@ public class ControleurCombat : MonoBehaviour
         
     }
     
-    int SortByScore(GameObject p1, GameObject p2)
+    int SortByScore(Personnage p1, Personnage p2)
     {
-        return p2.GetComponent<Personnage>().initiative.CompareTo(p1.GetComponent<Personnage>().initiative);
+        return p2.initiative.CompareTo(p1.initiative);
     }
     public void DetermineOrdre()
     {
@@ -334,12 +375,38 @@ public class ControleurCombat : MonoBehaviour
         }
         debutTour();
     }
+    public void meurt()
+    {
+        if (!encoreEnVie(0))
+        {
+            GameOver();
+        }
+        else if (!encoreEnVie(1))
+        {
+            Debug.Log("fin de ce niveau");
+        }
+    }
+    public void GameOver()
+    {
+        DontDestroyOnLoadScene.instance.removeDontDestroyOnLoad();
+        SceneManager.LoadScene("MenuPrincipal");
+    }
+    public bool encoreEnVie(int statutPerso)
+    {
+        foreach (Personnage p in personnages)
+        {
+            if (p.getStatusPersonnage() == statutPerso && p.pdv>0)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
 
     public void debutTour()
     {
 
         Personnage p = personnages[indexJoueur].GetComponent<Personnage>();
-        Debug.Log(indexJoueur);
         if (p.getStatusPersonnage() == 0)
         {
             joueurc = (Joueur)p;
@@ -372,7 +439,6 @@ public class ControleurCombat : MonoBehaviour
     }
     public void gereDeplacementPossible()
     {
-        Debug.Log("gere deplacement");
         Vector3 posJoueur = joueurc.transform.position;
         posJoueur.y = posJoueur.y * -1;
         positionDeplacable = boardManager.caseDeplacementPossible(posJoueur, joueurc);

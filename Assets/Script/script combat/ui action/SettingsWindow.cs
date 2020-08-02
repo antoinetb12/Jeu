@@ -14,34 +14,35 @@ public class SettingsWindow : MonoBehaviour
         Debug.Log(dropdownResolution.value);
         switch (dropdownResolution.value)
         {
-            case 0: LoaderCombat.instance.changeResolution(32, 1280, 720); break;
+            case 0: LoaderCombat.instance.changeResolution(1280, 720); break;
             case 1:
-                LoaderCombat.instance.changeResolution(48, 1920, 1080); break;
+                LoaderCombat.instance.changeResolution(1920, 1080); break;
         }
         //ControleurCombat.instance.finTour();
     }
     public void changeValueFullScreen()
     {
-        Debug.Log(dropdownFullScreen.value);
-        switch (dropdownFullScreen.value)
-        {
-            case 0: LoaderCombat.instance.changeTypeFullScreen(FullScreenMode.Windowed); break;
-            case 1:
-                LoaderCombat.instance.changeTypeFullScreen(FullScreenMode.FullScreenWindow); break;
-            case 2:
-                LoaderCombat.instance.changeTypeFullScreen(FullScreenMode.ExclusiveFullScreen); break;
-        }
+        LoaderCombat.instance.changeTypeFullScreen(dropdownFullScreen.value);
+        
         //ControleurCombat.instance.finTour();
     }
-
-    void Start()
+    private void Start()
     {
-        
+        if (Screen.width == 1920)
+        {
+            dropdownResolution.value = 1;
+        }
+        else
+        {
+            dropdownResolution.value = 0;
+        }
+        switch (Screen.fullScreenMode)
+        {
+            case FullScreenMode.Windowed: dropdownFullScreen.value = 0; break;
+            case FullScreenMode.FullScreenWindow: dropdownFullScreen.value = 1; break;
+            case FullScreenMode.ExclusiveFullScreen: dropdownFullScreen.value = 2; break;
+
+        }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

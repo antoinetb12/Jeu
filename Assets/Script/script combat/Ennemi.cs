@@ -109,8 +109,8 @@ public class Ennemi : Personnage
             if (pdv <= 0)
             {
 
-           
-            
+                ControleurCombat.instance.meurt();
+
             }
         }
     }

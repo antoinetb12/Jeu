@@ -122,17 +122,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 475a80bc6a32d5646acbbbdf56ec22ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  nom: j1
   pdv: 20
   vitesse: 5
   niveau: 0
   pa: 6
   pmOrigine: 10
   sorts:
-  - {fileID: 4305176178120565689, guid: 13aa51f6f3244944a8fa2cd2cf417382, type: 3}
-  - {fileID: 4305176178120565689, guid: 4d4ef8a307e9b004b967bf703f7789d7, type: 3}
   - {fileID: 4305176178120565689, guid: 7bdd5b14f18c39f4b9ac4f74f3d25044, type: 3}
+  - {fileID: 4305176178120565689, guid: 4d4ef8a307e9b004b967bf703f7789d7, type: 3}
+  - {fileID: 4305176178120565689, guid: 13aa51f6f3244944a8fa2cd2cf417382, type: 3}
   damageText: {fileID: 7124486619601633626, guid: b0a3b39d29c88904cb0b16065f2194dd,
     type: 3}
+  initiative: 5
+  dataToSaveForPlayer:
+    pdv: 0
+    niveau: 0
+    sortsPath: []
 --- !u!222 &8372143415677515063
 CanvasRenderer:
   m_ObjectHideFlags: 0

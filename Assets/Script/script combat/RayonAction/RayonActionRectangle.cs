@@ -79,7 +79,6 @@ public class RayonActionRectangle : RayonAction
     {
         int dstX = Mathf.Abs((int)startPos.x - targetCase.getX());
         int dstY = Mathf.Abs((int)(-startPos.y) - targetCase.getY());
-        Debug.Log("dstX : " + dstX + ", " + dstY);
         if (dstX == dstY)
             return 0;
         else if(dstX > dstY) {

@@ -197,7 +197,6 @@ public class BoardManagerCombat : MonoBehaviour
     }
     public void ajoutePerso(Vector3 position, Personnage p)
     {
-        Debug.Log(position.x + ", " + position.y);
         Case departc = grid[-(int)position.y, (int)position.x];
         departc.perso = p;
     }
@@ -391,7 +390,7 @@ public class BoardManagerCombat : MonoBehaviour
             
             for (y = p1.getY() + incrmY; y != p2.getY(); y += incrmY)
             {
-                if (bloqueLdv(grid[p1.getY() + incrmY, x]) && grid[p1.getY() + incrmY, x].perso == null || bloqueLdv(grid[p1.getY() + incrmY, x]) && grid[p1.getY() + incrmY, x].perso != null && grid[p1.getY() + incrmY, x] != p2)
+                if (bloqueLdv(grid[y, x]) && grid[y, x].perso == null || bloqueLdv(grid[y, x]) && grid[y, x].perso != null && grid[y, x] != p2)
                 {
                     return false;
                 }
@@ -507,7 +506,7 @@ public class BoardManagerCombat : MonoBehaviour
     }
     public void changeColor(List<Position> posPossible)
     {
-        Debug.Log("pos possible length" + posPossible.Count);
+
         foreach (Position pos in posPossible)
         {
             grid[pos.posY, pos.posX].changeColor(Color.yellow);

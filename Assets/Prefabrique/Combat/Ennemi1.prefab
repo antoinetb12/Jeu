@@ -103,6 +103,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41b3fde63644b9d4e91bd64c1103ca81, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  nom: ennemi1
   pdv: 20
   vitesse: 3
   niveau: 0
@@ -113,6 +114,10 @@ MonoBehaviour:
   damageText: {fileID: 7124486619601633626, guid: b0a3b39d29c88904cb0b16065f2194dd,
     type: 3}
   initiative: 10
+  dataToSaveForPlayer:
+    pdv: 0
+    niveau: 0
+    sorts: []
   joueurs: []
 --- !u!95 &2795933584427031807
 Animator:

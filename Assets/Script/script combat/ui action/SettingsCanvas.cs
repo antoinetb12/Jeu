@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class SettingsCanvas : MonoBehaviour
@@ -16,7 +17,15 @@ public class SettingsCanvas : MonoBehaviour
     {
         settingsMenu.SetActive(false);
     }
-
+    public void menuPrincipal()
+    {
+        DontDestroyOnLoadScene.instance.removeDontDestroyOnLoad();
+        SceneManager.LoadScene("MenuPrincipal");
+    }
+    public void save()
+    {
+        ControleurCombat.instance.SaveAll();
+    }
     void Start()
     {
         

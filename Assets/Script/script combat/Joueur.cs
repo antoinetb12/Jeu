@@ -7,7 +7,7 @@ public class Joueur : Personnage
     // Start is called before the first frame update
     void Start()
     {
-        
+        loadPlayer();
     }
     public void move(List<Case> chemin)
     {
@@ -15,6 +15,7 @@ public class Joueur : Personnage
         StartCoroutine(smoothMovement(chemin));
         
     }
+    
 
     
     // Update is called once per frame
@@ -41,6 +42,7 @@ public class Joueur : Personnage
         {
 
             this.GetComponent<Renderer>().material.color=Color.red;
+            ControleurCombat.instance.meurt();
 
         }
     }

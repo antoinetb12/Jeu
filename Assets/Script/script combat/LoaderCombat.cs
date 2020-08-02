@@ -8,13 +8,7 @@ public class LoaderCombat : MonoBehaviour
     public static LoaderCombat instance = null;
     public GameObject controleur;
     public List<GameObject> joueurs;
-    // Start is called before the first frame update
-    [Range(1, 4)]
-    public float pixelScale = 1;
-    private int pixelsPerUnit = 32;
-    private float halfScreen = 0.5f;
-    public int resolutionx=1280;
-    public int resolutiony=720;
+    // Start is called before the first frame 
     private Camera _camera;
     void Start()
     {
@@ -30,20 +24,47 @@ public class LoaderCombat : MonoBehaviour
         {
             Instantiate(controleur);
         }
+        setResolutionPixel(Screen.width, Screen.height);
+
     }
-    public void changeResolution(int pixel,int width,int heigth)
+    public void changeResolution(int width,int heigth)
     {
-        Screen.SetResolution(width, heigth, Screen.fullScreen);
-        resolutionx = width;
-        resolutiony = heigth;
-        PixelPerfectCamera p=GetComponentInParent<PixelPerfectCamera>();
-        p.assetsPPU = pixel;
+        Screen.SetResolution(width, heigth, Screen.fullScreenMode);
+       /* PlayerPrefs.SetInt("resolutionX", width);
+        PlayerPrefs.SetInt("resolutionY", heigth);*/
+        setResolutionPixel(width, heigth);
+    }
+    public void setResolutionPixel(int width,int heigth)
+    {
+
+        PixelPerfectCamera p = GetComponentInParent<PixelPerfectCamera>();
+        switch (width)
+        {
+            case 1920: p.assetsPPU = 48;
+                break;
+            case 1280:
+                p.assetsPPU = 32;
+                break;
+            default: p.assetsPPU = 32;break;
+        }
         p.refResolutionX = width;
         p.refResolutionY = heigth;
+
     }
-    public void changeTypeFullScreen(FullScreenMode fullScreenMode)
+    public void changeTypeFullScreen(int fullScreenMode)
     {
-        Screen.fullScreenMode = fullScreenMode;
+        switch (fullScreenMode)
+        {
+
+        
+         case 0: Screen.fullScreenMode=FullScreenMode.Windowed; break;
+        case 1:
+                Screen.fullScreenMode=FullScreenMode.FullScreenWindow; break;
+        case 2:
+                Screen.fullScreenMode=FullScreenMode.ExclusiveFullScreen; break;
+        }
+        //PlayerPrefs.SetInt("fullScreen", fullScreenMode);
+
     }
     // Update is called once per frame
     void Update()

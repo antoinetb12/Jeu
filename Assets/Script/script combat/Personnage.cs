@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
 public abstract class Personnage : MonoBehaviour
 {
+    public string nom;
     public int pdv = 20;
     public float vitesse = 0.1f;
     public int niveau;
@@ -14,6 +14,7 @@ public abstract class Personnage : MonoBehaviour
     public List<GameObject> sorts;
     public GameObject damageText;
     public int initiative = 5;
+    public DataToSaveForPlayer dataToSaveForPlayer;
 
     public void initialise(Personnage p)
     {
@@ -28,6 +29,30 @@ public abstract class Personnage : MonoBehaviour
     public int getPm()
     {
         return pm;
+    }
+    public void loadPlayer()
+    {
+        Debug.Log("essaie de load depuis perso");
+        DataToSaveForPlayer data = SaveSystem.LoadPlayer(this.nom);
+        Debug.Log(data);
+        if (data != null)
+        {
+            pdv = data.pdv;
+            niveau = data.niveau;
+            sorts.Clear();
+            foreach(string s in data.sortsPath)
+            {
+                sorts.Add( (GameObject)Resources.Load(s, typeof(GameObject)));
+                Debug.Log(s);
+                Debug.Log((GameObject)Resources.Load(s, typeof(GameObject)));
+            }
+
+        }
+        
+    }
+    public void SavePlayer()
+    {
+        SaveSystem.SavePlayer(this);
     }
     /*
      * savoir si c'est un allié ou ennemi 
@@ -80,14 +105,5 @@ public abstract class Personnage : MonoBehaviour
         ControleurCombat.instance.finDeplacement(positionDebut,transform.position,this);
         this.finMouvement();
     }
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }
