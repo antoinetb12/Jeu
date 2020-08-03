@@ -8,19 +8,27 @@ public abstract class Personnage : MonoBehaviour
     public int pdv = 20;
     public float vitesse = 0.1f;
     public int niveau;
-    public int pa = 6;
+    public int paOrigine = 6;
+    protected int pa;
     public int pmOrigine = 3;
-    private int pm;
+    protected int pm;
     public List<GameObject> sorts;
     public GameObject damageText;
     public int initiative = 5;
     public DataToSaveForPlayer dataToSaveForPlayer;
+    public List<Effet> effetLance = new List<Effet>();
+    public List<Effet> effetsRecu = new List<Effet>();
 
     public void initialise(Personnage p)
     {
         this.pdv = p.pdv;
         this.vitesse = p.vitesse;
         this.niveau = p.niveau;
+    }
+    public void initPaPm()
+    {
+        this.pm = this.pmOrigine;
+        this.pa = this.paOrigine;
     }
     public void setPm(int pm)
     {
@@ -29,6 +37,14 @@ public abstract class Personnage : MonoBehaviour
     public int getPm()
     {
         return pm;
+    }
+    public void setPa(int pa)
+    {
+        this.pa = pa;
+    }
+    public int getPa()
+    {
+        return pa;
     }
     public void loadPlayer()
     {
@@ -42,9 +58,8 @@ public abstract class Personnage : MonoBehaviour
             sorts.Clear();
             foreach(string s in data.sortsPath)
             {
-                sorts.Add( (GameObject)Resources.Load(s, typeof(GameObject)));
-                Debug.Log(s);
-                Debug.Log((GameObject)Resources.Load(s, typeof(GameObject)));
+                sorts.Add((GameObject)Resources.Load(s, typeof(GameObject)));
+                
             }
 
         }
@@ -58,20 +73,14 @@ public abstract class Personnage : MonoBehaviour
      * savoir si c'est un allié ou ennemi 
      */
     public abstract int getStatusPersonnage();
-    public virtual void recoitAttaque(Sort s)
+    public virtual void recoitAttaque(int degat)
     {
         
         GameObject currentText = Instantiate(damageText);
 
         currentText.transform.parent = transform;
         currentText.transform.localPosition = damageText.transform.localPosition;
-        if (s == null)
-        {
-            currentText.GetComponent<Text>().text = "-" + 50;
-
-        }
-        else
-        currentText.GetComponent<Text>().text ="-"+ s.pdd;
+        currentText.GetComponent<Text>().text ="-"+ degat;
         Destroy(currentText, 1.2f);
 
 

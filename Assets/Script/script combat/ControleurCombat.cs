@@ -94,19 +94,30 @@ public class ControleurCombat : MonoBehaviour
     {
         if (!deplacement)
         {
-
             if (choisiSort)
             {
                 if (boardManager.contient(positionAttaquable, c.getX(), c.getY()))
                 {
                     if (joueurc.lanceSort(sortSelectionne))
                     {
+                        List<Effet> effetsJoueur = getEffets(sortSelectionne.effet, StyleEffect.Personnage);
                         foreach(Case ca in boardManager.getAllCase(rayonAction))
                         {
                             if (ca.perso != null)
                             {
+                                if (effetsJoueur.Count != 0)
+                                {
+                                    foreach(Effet e in effetsJoueur)
+                                    {
+                                        Effet effet=e.copy();
+                                        effet.Victime = ca.perso;
+                                        effet.Lanceur = personnages[indexJoueur];
+                                        ca.perso.effetsRecu.Add(effet);
+                                        personnages[indexJoueur].effetLance.Add(effet);
+                                    }
+                                }
 
-                                ca.perso.recoitAttaque(sortSelectionne);
+                                ca.perso.recoitAttaque(sortSelectionne.pdd);
                                 if (ca.perso.pdv <= 0)
                                 {
                             
@@ -152,6 +163,19 @@ public class ControleurCombat : MonoBehaviour
             }
             
         }
+    }
+    public List<Effet> getEffets(List<GameObject> effects, StyleEffect styleEffect)
+    {
+        List<Effet> effets = new List<Effet>();
+        foreach(GameObject g in effects)
+        {
+            Effet e = g.GetComponent<Effet>();
+            if (e.styleEffect == styleEffect)
+            {
+                effets.Add(e);
+            }
+        }
+        return effets;
     }
     public void creerChemin(Case c, List<Case> cases)
     {
@@ -366,14 +390,16 @@ public class ControleurCombat : MonoBehaviour
     }
     public void finTour()
     {
-        Debug.Log("tour joueur");
-        
-        indexJoueur++;
-        if (indexJoueur == personnages.Count)
+        if (!deplacement)
         {
-            indexJoueur = 0;
+            indexJoueur++;
+            if (indexJoueur == personnages.Count)
+            {
+                indexJoueur = 0;
+            }
+            gestionAffichageSort.clear();
+            debutTour();
         }
-        debutTour();
     }
     public void meurt()
     {
@@ -402,19 +428,37 @@ public class ControleurCombat : MonoBehaviour
         }
         return false;
     }
-
+    public void applyEffect(Personnage p)
+    {
+        foreach(Effet f in p.effetsRecu)
+        {
+            f.applyEffect();
+        }
+        Effet e;
+        
+       
+        for(int i=0;i<p.effetLance.Count;i++)
+        {
+            e = p.effetLance[i];
+            e.TourInstancie++;
+            if (e.TourInstancie == e.duree)
+            {
+                e.Victime.effetsRecu.Remove(e);
+                p.effetLance.Remove(e);
+                i--;
+            }
+        }
+    }
     public void debutTour()
     {
-
-        Personnage p = personnages[indexJoueur].GetComponent<Personnage>();
+        Personnage p = personnages[indexJoueur];
+        applyEffect(p);
+        p.initPaPm();
         if (p.getStatusPersonnage() == 0)
         {
             joueurc = (Joueur)p;
-            Debug.Log("debut tour ally");
             gestionAffichageSort.j = joueurc;
-            Debug.Log(gestionAffichageSort.j.sorts);
             gestionAffichageSort.afficheSort();
-            joueurc.setPm(joueurc.pmOrigine);
             choisiSort = false;
             sortSelectionne = null;
             boardManager.reinitColor(positionAttaquable);
@@ -425,7 +469,6 @@ public class ControleurCombat : MonoBehaviour
         else
         {
             ennemic = (Ennemi)p;
-            ennemic.setPm(ennemic.pmOrigine);
             ennemic.joue(boardManager.grid, boardManager.tailleX, boardManager.tailleY);
             ennemic = null;
         }

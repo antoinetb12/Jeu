@@ -13,8 +13,9 @@ public class Joueur : Personnage
     {
 
         StartCoroutine(smoothMovement(chemin));
-        
+
     }
+
     
 
     
@@ -33,10 +34,10 @@ public class Joueur : Personnage
         }
         return false;
     }
-    public override void recoitAttaque(Sort s)
+    public override void recoitAttaque(int degat)
     {
-        base.recoitAttaque(s);
-        pdv = pdv - s.pdd;
+        base.recoitAttaque(degat);
+        pdv = pdv - degat;
         
         if (pdv <= 0)
         {

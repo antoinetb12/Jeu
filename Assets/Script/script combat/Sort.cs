@@ -11,6 +11,7 @@ public class Sort : MonoBehaviour
     public bool besoinLdv=true;
     public int rangeMin = 1;
     public RayonAction rayonAction;
+    public List<GameObject> effet;
     // Start is called before the first frame update
     private void OnMouseUp()
     {

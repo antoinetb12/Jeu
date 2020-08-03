@@ -95,16 +95,16 @@ public class Ennemi : Personnage
         if ( GetDistance(startNode, targetNode) <= s.range)
         {
             GetComponent<Animator>().SetTrigger("attaque1");
-            jChoisi.recoitAttaque(s);
+            jChoisi.recoitAttaque(s.pdd);
         }
         ControleurCombat.instance.finTour();
     }
-    public override void recoitAttaque(Sort s)
+    public override void recoitAttaque(int degat)
     {
-        base.recoitAttaque(s);
-        if (s != null) { 
-        pdv = pdv - s.pdd;
-        Debug.Log("ennemy recoit attaque de "+s.pdd+" ouch plus que "+pdv );
+        base.recoitAttaque(degat);
+        if (degat!=0) { 
+        pdv = pdv - degat;
+        Debug.Log("ennemy recoit attaque de "+ degat + " ouch plus que "+pdv );
         
             if (pdv <= 0)
             {

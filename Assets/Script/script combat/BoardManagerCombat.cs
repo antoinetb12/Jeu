@@ -57,38 +57,9 @@ public class BoardManagerCombat : MonoBehaviour
             }
         }
     }
-    public void boardSetup()
-    {
-        boardHolder = new GameObject("Board").transform;
-        GameObject aintancier;
-        int index;
-        Vector3 ancienCentre;
-        GameObject instance;
-        grid = new Case[tailleY, tailleX];
-        for (int x=0;x< tailleX; x++)
-        {
-            for(int y = 0; y < tailleY; y++)
-            {
-
-                GameObject nobj = (GameObject)GameObject.Instantiate(sol);
-
-                nobj.transform.position = new Vector2(sol.transform.position.x + (1 * x), sol.transform.position.y + (1 * y));
-                nobj.transform.localScale= new Vector3(1f, 1f, 1f);
-                Case c=nobj.GetComponent<Case>();
-                c.setVariable(x, y);
-                grid[y,x] = c;
-
-                nobj.gameObject.transform.parent = sol.transform.parent;
-                nobj.SetActive(true);
-                nobj.transform.SetParent(boardHolder);
-            }
-        }
-    }
     
     public void afficheMap(TextAsset t)
-    {
-        Debug.Log(t.text);
-        int l=0;
+    {       
         int i = 0;
         int y=0;
         int x=0;
@@ -257,7 +228,6 @@ public class BoardManagerCombat : MonoBehaviour
         List<Case> casesVisite = new List<Case>();
         grid[(int)depart.y, (int)depart.x].distanceSort = 0;
         casesVisite.Add(grid[(int)depart.y, (int)depart.x]);
-        int iteration = 0;
         while (casesVisite.Count != 0)
         {
             //Debug.Log(casesVisite[0].distance + " , " + casesVisite[0].getY() + ", " + casesVisite[0].getX());
@@ -429,7 +399,6 @@ public class BoardManagerCombat : MonoBehaviour
         List<Case> casesVisite = new List<Case>();
         grid[(int)depart.y, (int)depart.x].precedent = null;
         casesVisite.Add(grid[(int)depart.y, (int)depart.x]);
-        int iteration=0;
 
         while (casesVisite.Count != 0)
         {

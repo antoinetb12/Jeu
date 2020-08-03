@@ -53,6 +53,7 @@ MonoBehaviour:
   besoinLdv: 1
   rangeMin: 1
   rayonAction: {fileID: 0}
+  effet: []
 --- !u!212 &4305176178120565690
 SpriteRenderer:
   m_ObjectHideFlags: 0
