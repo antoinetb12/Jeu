@@ -574,4 +574,9 @@ public class BoardManagerCombat : MonoBehaviour
         }
         return cs;
     }
+    public Case getCase(Vector3 posJoueur)
+    {
+        Debug.Log(grid[(int)-posJoueur.y, (int)posJoueur.x]);
+        return grid[(int)-posJoueur.y,(int) posJoueur.x];
+    }
 }

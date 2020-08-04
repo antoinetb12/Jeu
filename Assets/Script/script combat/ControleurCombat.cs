@@ -1,7 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class ControleurCombat : MonoBehaviour
@@ -101,8 +99,16 @@ public class ControleurCombat : MonoBehaviour
                     if (joueurc.lanceSort(sortSelectionne))
                     {
                         List<Effet> effetsJoueur = getEffets(sortSelectionne.effet, StyleEffect.Personnage);
+                        List<Effet> effetsCase = getEffets(sortSelectionne.effet, StyleEffect.Case);
                         foreach(Case ca in boardManager.getAllCase(rayonAction))
                         {
+                            ca.Effet.AddRange(effetsCase);
+                            foreach (Effet e in effetsCase)
+                            {
+                                Effet effet = e.copy();
+                                effet.Lanceur = personnages[indexJoueur];
+                                personnages[indexJoueur].effetLance.Add(effet);
+                            }
                             if (ca.perso != null)
                             {
                                 if (effetsJoueur.Count != 0)
@@ -171,6 +177,18 @@ public class ControleurCombat : MonoBehaviour
         {
             Effet e = g.GetComponent<Effet>();
             if (e.styleEffect == styleEffect)
+            {
+                effets.Add(e);
+            }
+        }
+        return effets;
+    }
+    public List<Effet> getEffets(List<Effet> effects, TimeEffect timeEffect)
+    {
+        List<Effet> effets = new List<Effet>();
+        foreach (Effet e in effects)
+        {
+            if (e.timeEffect == timeEffect)
             {
                 effets.Add(e);
             }
@@ -392,6 +410,11 @@ public class ControleurCombat : MonoBehaviour
     {
         if (!deplacement)
         {
+            Personnage p = personnages[indexJoueur];
+            foreach (Effet e in getEffets(p.effetsRecu,TimeEffect.Fin))
+            {
+                e.applyEffect();
+            }
             indexJoueur++;
             if (indexJoueur == personnages.Count)
             {
@@ -428,9 +451,9 @@ public class ControleurCombat : MonoBehaviour
         }
         return false;
     }
-    public void applyEffect(Personnage p)
+    public void applyEffectDebut(Personnage p)
     {
-        foreach(Effet f in p.effetsRecu)
+        foreach(Effet f in getEffets(p.effetsRecu,TimeEffect.Debut))
         {
             f.applyEffect();
         }
@@ -443,7 +466,10 @@ public class ControleurCombat : MonoBehaviour
             e.TourInstancie++;
             if (e.TourInstancie == e.duree)
             {
-                e.Victime.effetsRecu.Remove(e);
+                if (e.Victime != null)
+                {
+                    e.Victime.effetsRecu.Remove(e);
+                }
                 p.effetLance.Remove(e);
                 i--;
             }
@@ -452,8 +478,13 @@ public class ControleurCombat : MonoBehaviour
     public void debutTour()
     {
         Personnage p = personnages[indexJoueur];
-        applyEffect(p);
+        applyEffectDebut(p);
         p.initPaPm();
+        Case c=boardManager.getCase(p.transform.position);
+        foreach(Effet e in c.GetEffets())
+        {
+            e.applyEffect(p);
+        }
         if (p.getStatusPersonnage() == 0)
         {
             joueurc = (Joueur)p;

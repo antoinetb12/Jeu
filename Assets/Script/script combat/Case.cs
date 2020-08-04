@@ -9,7 +9,6 @@ public class Case : MonoBehaviour
     public bool mur;
     private int x;
     private int y;
-    private int effet;
     public int distance=0;
     public int distanceSort = 0;
     public Case precedent;
@@ -20,6 +19,9 @@ public class Case : MonoBehaviour
     Color m_OriginalColor;
     Color lastColor;
     Color m_MouseOverColor = Color.red;
+    private List<Effet> effet;
+    public List<Effet> Effet { get => effet; set => effet = value; }
+
 
     public int fCost
     {
@@ -29,11 +31,14 @@ public class Case : MonoBehaviour
         }
     }
 
+
+
     //Get the GameObject’s mesh renderer to access the GameObject’s material and color
     Renderer m_Renderer;
     void OnMouseOver()
     {
         ControleurCombat.instance.hover(this);
+        Debug.Log(Effet.Count);
         
         //If your mouse hovers over the GameObject with the script attached, output this message
         //Debug.Log("Mouse is over GameObject."+ m_Renderer.material.color + "," + m_MouseOverColor);
@@ -91,8 +96,14 @@ public class Case : MonoBehaviour
     {
         initRenderer();
         //Fetch the mesh renderer component from the GameObject
-
-
+    }
+    public List<Effet> GetEffets()
+    {
+        if (Effet == null)
+        {
+            Effet = new List<Effet>();
+        }
+        return Effet;
     }
     private void initRenderer()
     {
@@ -101,6 +112,7 @@ public class Case : MonoBehaviour
             m_Renderer = this.GetComponent<Renderer>();
             m_OriginalColor = m_Renderer.material.color;
             lastColor = m_OriginalColor;
+            Effet = new List<Effet>();
         }
     }
     public int getX()
@@ -123,7 +135,6 @@ public class Case : MonoBehaviour
     }
     public bool equals(Case c)
     {
-        Debug.Log("result = " + (c.x == this.x && c.y == this.y));
         return c.x == this.x && c.y == this.y;
     }
 

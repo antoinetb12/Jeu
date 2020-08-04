@@ -7,6 +7,7 @@ public abstract class Effet : MonoBehaviour
     public StyleEffect styleEffect;
     public TimeEffect timeEffect;
     public int duree;
+    public GameObject image;
     private int tourInstancie = 0;
 
 
@@ -17,12 +18,13 @@ public abstract class Effet : MonoBehaviour
     public Personnage Victime { get => victime; set => victime = value; }
 
     public abstract void applyEffect();
-
-    protected Effet(StyleEffect styleEffect, TimeEffect timeEffect, int duree)
+    public abstract void applyEffect(Personnage victime);
+    protected Effet(StyleEffect styleEffect, TimeEffect timeEffect, int duree,GameObject image)
     {
         this.styleEffect = styleEffect;
         this.timeEffect = timeEffect;
         this.duree = duree;
+        this.image = image;
     }
 
     public abstract Effet copy();

@@ -95,6 +95,10 @@ public abstract class Personnage : MonoBehaviour
        for(int i=0;i<chemin.Count;i++)
         {
             c = chemin[i];
+            foreach (Effet e in c.GetEffets())
+            {
+                e.applyEffect(this);
+            }
             Vector3 end = new Vector3(c.getX(), -c.getY());
             float sqrRemainingDistance = (transform.position - end).sqrMagnitude;
             //While that distance is greater than a very small amount (Epsilon, almost zero):
