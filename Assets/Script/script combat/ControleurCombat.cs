@@ -50,6 +50,11 @@ public class ControleurCombat : MonoBehaviour
     }
     public void selectionneSort(Sort s)
     {
+        joueurc.afficheSort();
+        joueurc.getSort(s).niveau= joueurc.getSort(s).niveau+1;
+        joueurc.afficheSort();
+        Debug.Log(s.nom+", "+s.niveau);
+        s.niveau++;
         if (!deplacement)
         {
 

@@ -12,12 +12,15 @@ public abstract class Personnage : MonoBehaviour
     protected int pa;
     public int pmOrigine = 3;
     protected int pm;
-    public List<GameObject> sorts;
+    public List<GameObject> sortsG;
+    private List<Sort> sorts = new List<Sort>();
     public GameObject damageText;
     public int initiative = 5;
     public DataToSaveForPlayer dataToSaveForPlayer;
     public List<Effet> effetLance = new List<Effet>();
     public List<Effet> effetsRecu = new List<Effet>();
+
+    public List<Sort> Sorts { get => sorts; set => sorts = value; }
 
     public void initialise(Personnage p)
     {
@@ -55,13 +58,31 @@ public abstract class Personnage : MonoBehaviour
         {
             pdv = data.pdv;
             niveau = data.niveau;
-            sorts.Clear();
-            foreach(string s in data.sortsPath)
+            Debug.Log("il y a tant de sort : "+data.sortsPath.Count);
+            Sorts.Clear();
+            foreach(DataToSaveForSort s in data.sortsPath)
             {
-                sorts.Add((GameObject)Resources.Load(s, typeof(GameObject)));
-                
+                Debug.Log("data to save " + s.niveau);  
+                GameObject g = (GameObject)Resources.Load(s.path, typeof(GameObject));
+                Sort sort=g.GetComponent<Sort>();
+                sort.niveau = s.niveau;
+                Debug.Log("sort 1 : " + sort.nom + ", " + sort.niveau);
+
+                Sorts.Add(sort);
+                Sort sort2 = g.GetComponent<Sort>();
+                Debug.Log("sort 2 : "+sort2.nom + ", " + sort2.niveau);
+
+
             }
 
+        }
+        else
+        {
+            foreach(GameObject g in sortsG)
+            {
+                sorts.Add(g.GetComponent<Sort>());
+
+            }
         }
         
     }
@@ -84,6 +105,24 @@ public abstract class Personnage : MonoBehaviour
         Destroy(currentText, 1.2f);
 
 
+    }
+    public Sort getSort(Sort s)
+    {
+        foreach(Sort so in Sorts)
+        {
+            if (so.nom == s.nom)
+            {
+                return so;
+            }
+        }
+        return null;
+    }
+    public void afficheSort()
+    {
+        foreach(Sort s in Sorts)
+        {
+            Debug.Log("affichage : " + s.nom + ", " + s.niveau);
+        }
     }
     public abstract void finMouvement();
     // Start is called before the first frame update

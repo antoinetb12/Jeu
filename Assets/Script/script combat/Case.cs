@@ -38,7 +38,6 @@ public class Case : MonoBehaviour
     void OnMouseOver()
     {
         ControleurCombat.instance.hover(this);
-        Debug.Log(Effet.Count);
         
         //If your mouse hovers over the GameObject with the script attached, output this message
         //Debug.Log("Mouse is over GameObject."+ m_Renderer.material.color + "," + m_MouseOverColor);

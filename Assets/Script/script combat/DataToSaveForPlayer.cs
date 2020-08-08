@@ -7,15 +7,17 @@ public class DataToSaveForPlayer
 {
     public int pdv;
     public int niveau;
-    public List<string> sortsPath;
+    public List<DataToSaveForSort> sortsPath;
     public DataToSaveForPlayer(Personnage personnages)
     {
         pdv = personnages.pdv;
         niveau = personnages.niveau;
-        sortsPath = new List<string>();
-        foreach(GameObject g in personnages.sorts)
+        sortsPath = new List<DataToSaveForSort>();
+        foreach(Sort s in personnages.Sorts)
+
         {
-            sortsPath.Add("Sorts/"+g.name);
+            Debug.Log("save niveau : " + s.niveau);
+            sortsPath.Add(new DataToSaveForSort(s));
         }
     }
     

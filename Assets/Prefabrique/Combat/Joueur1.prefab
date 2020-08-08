@@ -126,9 +126,9 @@ MonoBehaviour:
   pdv: 20
   vitesse: 5
   niveau: 0
-  pa: 6
+  paOrigine: 6
   pmOrigine: 10
-  sorts:
+  sortsG:
   - {fileID: 4305176178120565689, guid: 7bdd5b14f18c39f4b9ac4f74f3d25044, type: 3}
   - {fileID: 4305176178120565689, guid: 4d4ef8a307e9b004b967bf703f7789d7, type: 3}
   - {fileID: 4305176178120565689, guid: 13aa51f6f3244944a8fa2cd2cf417382, type: 3}
@@ -139,6 +139,8 @@ MonoBehaviour:
     pdv: 0
     niveau: 0
     sortsPath: []
+  effetLance: []
+  effetsRecu: []
 --- !u!222 &8372143415677515063
 CanvasRenderer:
   m_ObjectHideFlags: 0

@@ -12,9 +12,9 @@ public class GestionAffichageSort :MonoBehaviour
     }
     public void afficheSort()
     {
-        for(int i=0; i < j.sorts.Count; i++)
+        for(int i=0; i < j.Sorts.Count; i++)
         {
-            GameObject nobj = (GameObject)GameObject.Instantiate(j.sorts[i]);
+            GameObject nobj = (GameObject)GameObject.Instantiate(j.Sorts[i].gameObject);
 
             nobj.transform.position = new Vector2(30, -(10+i));
             nobj.transform.localScale = new Vector3(1f, 1f, 1f);

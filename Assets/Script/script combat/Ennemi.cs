@@ -16,6 +16,11 @@ public class Ennemi : Personnage
         {
             algo = GetComponent<AlgoDeplacement>();
         }
+        foreach (GameObject g in sortsG)
+        {
+            Sorts.Add(g.GetComponent<Sort>());
+
+        }
     }
 
     // Update is called once per frame
@@ -91,7 +96,7 @@ public class Ennemi : Personnage
     {
         Case startNode = grid[Mathf.RoundToInt(-transform.position.y), Mathf.RoundToInt(transform.position.x)];
         Case targetNode = grid[Mathf.RoundToInt(-jChoisi.transform.position.y), Mathf.RoundToInt(jChoisi.transform.position.x)];
-        Sort s = sorts[0].GetComponent<Sort>();
+        Sort s = Sorts[0];
         if ( GetDistance(startNode, targetNode) <= s.range)
         {
             GetComponent<Animator>().SetTrigger("attaque1");
