@@ -4,11 +4,13 @@ using UnityEngine.SceneManagement;
 
 public class ControleurCombat : MonoBehaviour
 {
-    public static ControleurCombat instance =null;
+    public static ControleurCombat instance = null;
     private BoardManagerCombat boardManager;
+    private EffectControlleur effectControlleur;
+    private InventaireControlleur inventaireControlleur;
     public List<GameObject> joueurs;
     public List<GameObject> ennemies;
-    private List<GameObject> joueursIntanciate=new List<GameObject>();
+    private List<GameObject> joueursIntanciate = new List<GameObject>();
     private List<Joueur> joueursCIntanciate = new List<Joueur>();
     private List<GameObject> ennemisInstanciate = new List<GameObject>();
     private Joueur joueurc;
@@ -21,7 +23,7 @@ public class ControleurCombat : MonoBehaviour
     private int indexJoueur;
     List<Position> positionDeplacable;
     List<Position> positionAttaquable;
-    Case caseHover=null;
+    Case caseHover = null;
     List<Position> rayonAction = null;
     List<Personnage> personnages = new List<Personnage>();
     // Start is called before the first frame update
@@ -29,20 +31,25 @@ public class ControleurCombat : MonoBehaviour
     {
 
 
-       // text=GameObject.Find("Text").GetComponent<Text>();
+        // text=GameObject.Find("Text").GetComponent<Text>();
         if (instance == null)
         {
             instance = this;
         }
-        else{
+        else
+        {
             Destroy(gameObject);
         }
         boardManager = GetComponent<BoardManagerCombat>();
+        effectControlleur = GetComponent<EffectControlleur>();
+        inventaireControlleur = GetComponent<InventaireControlleur>();
         gestionAffichageSort = new GestionAffichageSort();
+        
         //initGame();
         loadSave();
-        
+
     }
+    
 
     public void setDeplacement(bool deplacement)
     {
@@ -50,28 +57,18 @@ public class ControleurCombat : MonoBehaviour
     }
     public void selectionneSort(Sort s)
     {
-        joueurc.afficheSort();
-        joueurc.getSort(s).niveau= joueurc.getSort(s).niveau+1;
-        joueurc.afficheSort();
-        Debug.Log(s.nom+", "+s.niveau);
-        s.niveau++;
-        if (!deplacement)
+        Sort sort = joueurc.getSort(s);
+        if (!deplacement && sort.disponible(joueurc))
         {
-
-        
-            Debug.Log("lance sort ");
-            if (sortSelectionne !=null && sortSelectionne.nom == s.nom)
+            if (sortSelectionne != null && sortSelectionne.nom == sort.nom)
             {
-            
-                choisiSort = false;
-                sortSelectionne = null;
-                boardManager.reinitColor(positionAttaquable);
-                boardManager.changeColor(positionDeplacable);
-                boardManager.reinitDistanceSort();
 
-            }else if(sortSelectionne != null && sortSelectionne.nom != s.nom)
+                desSelectionneSort();
+
+            }
+            else if (sortSelectionne != null && sortSelectionne.nom != sort.nom)
             {
-                sortSelectionne = s;
+                sortSelectionne = sort;
                 choisiSort = true;
                 boardManager.reinitColor(positionAttaquable);
                 boardManager.reinitDistanceSort();
@@ -83,79 +80,77 @@ public class ControleurCombat : MonoBehaviour
             else
             {
                 choisiSort = true;
-                sortSelectionne = s;
+                sortSelectionne = sort;
                 boardManager.reinitColor(positionDeplacable);
                 boardManager.reinitDistanceSort();
                 Vector3 posJoueur = joueurc.transform.position;
                 posJoueur.y = posJoueur.y * -1;
-                positionAttaquable= boardManager.caseAttaquable(s, posJoueur);
+                positionAttaquable = boardManager.caseAttaquable(sort, posJoueur);
                 boardManager.changeColorAttaque(positionAttaquable);
             }
         }
     }
+    
+    public void lanceSort(Case c, Personnage p, Sort sort)
+    {
+        if (boardManager.contient(positionAttaquable, c.getX(), c.getY()))
+        {
+            if (p.lanceSort(sort))
+            {
+                List<Effet> effetsJoueur = effectControlleur.getEffets(sort.effet, StyleEffect.Personnage);
+                List<Effet> effetsCase = effectControlleur.getEffets(sort.effet, StyleEffect.Case);
+                foreach (Case ca in boardManager.getAllCase(rayonAction))
+                {
+                    effectControlleur.ajouteEffetCase(effetsCase, ca,personnages[indexJoueur]);
+                    if (ca.perso != null)
+                    {
+                        effectControlleur.ajouteEffetJoueur(effetsJoueur, ca, personnages[indexJoueur]);
+                        int degatPresume = AlgoCalculDegat.degatPresume(p, sort);
+
+                        ca.perso.recoitAttaque(AlgoCalculDegat.calculDegat(ca.perso, sort.typeSort, degatPresume));
+                        if (ca.perso.pdv <= 0)
+                        {
+                            foreach (GameObject e in ennemisInstanciate)
+                            {
+                                Debug.Log(e.GetComponent<Ennemi>().pdv);
+                                if (e.GetComponent<Ennemi>() == ca.perso)
+                                {
+                                    ennemic = null;
+                                    Destroy(e);
+                                }
+                            }
+                            ca.perso = null;
+
+                        }
+                    }
+                }
+            }
+            gestionAffichageSort.UpdateAffichage();
+            desSelectionneSort();
+
+        }
+        else
+        {
+            desSelectionneSort();
+        }
+    }
+    public void desSelectionneSort()
+    {
+        choisiSort = false;
+        sortSelectionne = null;
+        boardManager.reinitColor(positionAttaquable);
+        boardManager.reinitColor(rayonAction);
+        boardManager.reinitDistance();
+        gereDeplacementPossible();
+    }
+
     public void click(Case c)
     {
         if (!deplacement)
         {
             if (choisiSort)
             {
-                if (boardManager.contient(positionAttaquable, c.getX(), c.getY()))
-                {
-                    if (joueurc.lanceSort(sortSelectionne))
-                    {
-                        List<Effet> effetsJoueur = getEffets(sortSelectionne.effet, StyleEffect.Personnage);
-                        List<Effet> effetsCase = getEffets(sortSelectionne.effet, StyleEffect.Case);
-                        foreach(Case ca in boardManager.getAllCase(rayonAction))
-                        {
-                            ca.Effet.AddRange(effetsCase);
-                            foreach (Effet e in effetsCase)
-                            {
-                                Effet effet = e.copy();
-                                effet.Lanceur = personnages[indexJoueur];
-                                personnages[indexJoueur].effetLance.Add(effet);
-                            }
-                            if (ca.perso != null)
-                            {
-                                if (effetsJoueur.Count != 0)
-                                {
-                                    foreach(Effet e in effetsJoueur)
-                                    {
-                                        Effet effet=e.copy();
-                                        effet.Victime = ca.perso;
-                                        effet.Lanceur = personnages[indexJoueur];
-                                        ca.perso.effetsRecu.Add(effet);
-                                        personnages[indexJoueur].effetLance.Add(effet);
-                                    }
-                                }
-
-                                ca.perso.recoitAttaque(sortSelectionne.pdd);
-                                if (ca.perso.pdv <= 0)
-                                {
-                            
-                           
-                                    foreach(GameObject e in ennemisInstanciate)
-                                    {
-                                        Debug.Log(e.GetComponent<Ennemi>().pdv);
-                                        if (e.GetComponent<Ennemi>() == ca.perso)
-                                        {
-                                            ennemic = null;
-                                            Destroy(e);
-                                        }
-                                    }
-                                    ca.perso = null;
-
-                                }
-                            }
-                        }
-                    }
-                    choisiSort = false;
-                    sortSelectionne = null;
-                    boardManager.reinitColor(positionAttaquable);
-                    boardManager.reinitColor(rayonAction);
-                    boardManager.reinitDistance();
-                    gereDeplacementPossible();
-
-                }
+                lanceSort(c, joueurc, sortSelectionne);
             }
             else
             {
@@ -168,38 +163,15 @@ public class ControleurCombat : MonoBehaviour
                     List<Case> chemin = new List<Case>();
                     creerChemin(c, chemin);
                     chemin.Reverse();
+                    reinitialiseAffichageDeplacement();
                     joueurc.move(chemin);
-
                 }
             }
-            
+
         }
     }
-    public List<Effet> getEffets(List<GameObject> effects, StyleEffect styleEffect)
-    {
-        List<Effet> effets = new List<Effet>();
-        foreach(GameObject g in effects)
-        {
-            Effet e = g.GetComponent<Effet>();
-            if (e.styleEffect == styleEffect)
-            {
-                effets.Add(e);
-            }
-        }
-        return effets;
-    }
-    public List<Effet> getEffets(List<Effet> effects, TimeEffect timeEffect)
-    {
-        List<Effet> effets = new List<Effet>();
-        foreach (Effet e in effects)
-        {
-            if (e.timeEffect == timeEffect)
-            {
-                effets.Add(e);
-            }
-        }
-        return effets;
-    }
+    
+    
     public void creerChemin(Case c, List<Case> cases)
     {
         if (c.precedent != null)
@@ -209,10 +181,10 @@ public class ControleurCombat : MonoBehaviour
         }
 
     }
-    
+
     public void affiche(List<Position> posPossible)
     {
-        
+
         foreach (Position pos in posPossible)
         {
             Debug.Log(pos.posX + ", " + pos.posY);
@@ -223,7 +195,7 @@ public class ControleurCombat : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
     public void loadSave()
     {
@@ -231,7 +203,7 @@ public class ControleurCombat : MonoBehaviour
         List<GameObject> joueurChoisi = new List<GameObject>();
         if (data != null)
         {
-            foreach(string nom in data.personnages)
+            foreach (string nom in data.personnages)
             {
                 joueurChoisi.Add(findJoueur(nom));
             }
@@ -240,13 +212,15 @@ public class ControleurCombat : MonoBehaviour
         {
             joueurChoisi.Add(findJoueur("j1"));
         }
-        initGame(joueurChoisi);
         
+        initGame(joueurChoisi);
+
     }
-    public GameObject findJoueur(string name) {
-        foreach(GameObject g in joueurs)
+    public GameObject findJoueur(string name)
+    {
+        foreach (GameObject g in joueurs)
         {
-            Personnage p=g.GetComponent<Personnage>();
+            Personnage p = g.GetComponent<Personnage>();
             if (p.nom == name)
             {
                 return g;
@@ -266,6 +240,7 @@ public class ControleurCombat : MonoBehaviour
             nobj.SetActive(true);
             personnages.Add(nobj.GetComponent<Personnage>());
         }
+        inventaireControlleur.setPersonnage(personnages);
         indexJoueur = 0;
         joueurc = joueursCIntanciate[indexJoueur];
         
@@ -281,7 +256,7 @@ public class ControleurCombat : MonoBehaviour
     public void SaveAll()
     {
         List<string> playerName = new List<string>();
-        foreach(Personnage p in personnages)
+        foreach (Personnage p in personnages)
         {
 
             if (p.getStatusPersonnage() == 0)
@@ -302,7 +277,7 @@ public class ControleurCombat : MonoBehaviour
         nobj.transform.localScale = new Vector3(1f, 1f, 1f);
         Ennemi e = nobj.GetComponent<Ennemi>();
         ennemic = e;
-        foreach(Joueur j in joueursCIntanciate)
+        foreach (Joueur j in joueursCIntanciate)
         {
             ennemic.joueurs.Add(j);
         }
@@ -314,7 +289,7 @@ public class ControleurCombat : MonoBehaviour
     }
     public void changeCaseRecursif(Case c)
     {
-        
+
         if (c.precedent != null)
         {
             c.changeRed();
@@ -324,7 +299,7 @@ public class ControleurCombat : MonoBehaviour
     }
     public void exitCaseRecursif(Case c)
     {
-        
+
         if (c.precedent != null)
         {
             c.exit();
@@ -355,8 +330,9 @@ public class ControleurCombat : MonoBehaviour
     }
     public void hover(Case c)
     {
-        
-        if (!deplacement ) {
+
+        if (!deplacement)
+        {
             if (!choisiSort)
             {
                 if (boardManager.contient(positionDeplacable, c.getX(), c.getY()))
@@ -370,7 +346,7 @@ public class ControleurCombat : MonoBehaviour
             }
             else
             {
-                if(boardManager.contient(positionAttaquable, c.getX(), c.getY()))
+                if (boardManager.contient(positionAttaquable, c.getX(), c.getY()))
                 {
                     if (caseHover != c)
                     {
@@ -380,7 +356,7 @@ public class ControleurCombat : MonoBehaviour
                 }
             }
 
-           // boardManager.changeColorCase(boardManager.tracerSegment(boardManager.grid[-(int)joueurc.transform.position.y, (int)joueurc.transform.position.x], c));
+            // boardManager.changeColorCase(boardManager.tracerSegment(boardManager.grid[-(int)joueurc.transform.position.y, (int)joueurc.transform.position.x], c));
         }
         caseHover = c;
 
@@ -397,12 +373,12 @@ public class ControleurCombat : MonoBehaviour
         }
         else
         {
-            reinitialiseAffichageDeplacement();
+            gestionAffichageSort.UpdateAffichage();
             gereDeplacementPossible();
         }
-        
+
     }
-    
+
     int SortByScore(Personnage p1, Personnage p2)
     {
         return p2.initiative.CompareTo(p1.initiative);
@@ -416,7 +392,7 @@ public class ControleurCombat : MonoBehaviour
         if (!deplacement)
         {
             Personnage p = personnages[indexJoueur];
-            foreach (Effet e in getEffets(p.effetsRecu,TimeEffect.Fin))
+            foreach (Effet e in effectControlleur.getEffets(p.effetsRecu, TimeEffect.Fin))
             {
                 e.applyEffect();
             }
@@ -426,6 +402,7 @@ public class ControleurCombat : MonoBehaviour
                 indexJoueur = 0;
             }
             gestionAffichageSort.clear();
+            reinitialiseAffichageDeplacement();
             debutTour();
         }
     }
@@ -449,45 +426,23 @@ public class ControleurCombat : MonoBehaviour
     {
         foreach (Personnage p in personnages)
         {
-            if (p.getStatusPersonnage() == statutPerso && p.pdv>0)
+            if (p.getStatusPersonnage() == statutPerso && p.pdv > 0)
             {
                 return true;
             }
         }
         return false;
     }
-    public void applyEffectDebut(Personnage p)
-    {
-        foreach(Effet f in getEffets(p.effetsRecu,TimeEffect.Debut))
-        {
-            f.applyEffect();
-        }
-        Effet e;
-        
-       
-        for(int i=0;i<p.effetLance.Count;i++)
-        {
-            e = p.effetLance[i];
-            e.TourInstancie++;
-            if (e.TourInstancie == e.duree)
-            {
-                if (e.Victime != null)
-                {
-                    e.Victime.effetsRecu.Remove(e);
-                }
-                p.effetLance.Remove(e);
-                i--;
-            }
-        }
-    }
+    
     public void debutTour()
     {
         Personnage p = personnages[indexJoueur];
-        applyEffectDebut(p);
-        p.initPaPm();
-        Case c=boardManager.getCase(p.transform.position);
-        foreach(Effet e in c.GetEffets())
+        p.debutTour();
+        effectControlleur.applyEffectDebut(p);
+        Case c = boardManager.getCase(p.transform.position);
+        foreach (Effet e in c.GetEffets())
         {
+            Debug.Log("lanceur dans la case " + e.Lanceur);
             e.applyEffect(p);
         }
         if (p.getStatusPersonnage() == 0)
@@ -508,8 +463,8 @@ public class ControleurCombat : MonoBehaviour
             ennemic.joue(boardManager.grid, boardManager.tailleX, boardManager.tailleY);
             ennemic = null;
         }
-       
-       
+
+
     }
     public void reinitialiseAffichageDeplacement()
     {

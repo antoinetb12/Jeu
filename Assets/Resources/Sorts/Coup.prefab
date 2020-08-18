@@ -52,7 +52,10 @@ MonoBehaviour:
   cout: 3
   besoinLdv: 1
   rangeMin: 1
+  niveau: 2
   rayonAction: {fileID: 0}
+  effet:
+  - {fileID: 4305176178120565689, guid: f83f19457aab777489d5d7b33b98affb, type: 3}
 --- !u!212 &4305176178120565690
 SpriteRenderer:
   m_ObjectHideFlags: 0

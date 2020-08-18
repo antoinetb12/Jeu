@@ -1,0 +1,151 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2169217847718329186
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2169217847718329213}
+  - component: {fileID: 2169217847718329214}
+  - component: {fileID: 2169217847718329215}
+  - component: {fileID: 2169217847718329184}
+  - component: {fileID: 2169217847718329185}
+  m_Layer: 0
+  m_Name: ControleurCombat
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 4294967295
+  m_IsActive: 1
+--- !u!4 &2169217847718329213
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2169217847718329186}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 1.8708086, y: -1.2383151, z: -221.13837}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2169217847718329214
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2169217847718329186}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22343032111ec2d4d8f8d968a4e82537, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  joueurs:
+  - {fileID: 3621213823060987773, guid: f902611549c78d140b7a13d24f58e24b, type: 3}
+  ennemies:
+  - {fileID: 6148375148661351487, guid: d59dfbe448e00b2429253f8b5faa953f, type: 3}
+  listMap:
+  - {fileID: 4900000, guid: f9f5e85eaf02ff74a8c9ae69981c3536, type: 3}
+--- !u!114 &2169217847718329215
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2169217847718329186}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88624c652da29f741af8f6f7ae29e6d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cases:
+  - {fileID: 4362712041360857224, guid: 6f51ddea77365bb4189cea08a2ff0913, type: 3}
+  - {fileID: 3315723675192045279, guid: e52bf4bea73915048a6932dd5cce09cf, type: 3}
+  sol: {fileID: 4362712041360857224, guid: 6f51ddea77365bb4189cea08a2ff0913, type: 3}
+  tailleX: 20
+  tailleY: 20
+  possibilite: 3
+  ligne: {fileID: 4362712041360857224, guid: dc37a962a0967484c8b28ab82dfe6214, type: 3}
+--- !u!114 &2169217847718329184
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2169217847718329186}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e09200bf59e89ce4fa8b1a6617b500d9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2169217847718329185
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2169217847718329186}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0acce89c42f67194dbf84cf72067a1f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemPossible:
+  - {fileID: 11400000, guid: ee1eaa41ec40a314b9077d8959d91019, type: 2}
+  - {fileID: 11400000, guid: a50a0980a1f6b7643ab708eef97acd41, type: 2}
+  slot:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  inventaireGameObject: {fileID: 0}

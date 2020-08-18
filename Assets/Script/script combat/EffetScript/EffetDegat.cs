@@ -5,25 +5,41 @@ using UnityEngine;
 public class EffetDegat : Effet
 {
     public int pdd;
+    public TypeSort typeSort;
 
-    public EffetDegat(StyleEffect styleEffect, TimeEffect timeEffect, int duree,GameObject image,int pdd) : base(styleEffect, timeEffect, duree,image)
+    public override void addComponent(GameObject g)
     {
-        this.pdd = pdd;
+        g.AddComponent<EffetDegat>();
     }
 
     public override void applyEffect()
     {
-        Victime.recoitAttaque(pdd);
+        applyEffect(Victime);
     }
 
     public override void applyEffect(Personnage victime)
     {
-        victime.recoitAttaque(pdd);
+        int degatPresume = AlgoCalculDegat.degatPresume(Lanceur, typeSort, pdd);
+        int degatRecu = AlgoCalculDegat.calculDegat(victime, typeSort, degatPresume);
+        victime.recoitAttaque(degatRecu);
     }
 
-    public override Effet copy()
+    public override void cancelEffect()
     {
-        return new EffetDegat(styleEffect, timeEffect, duree, image,pdd);
+    }
+
+    public override void cancelEffect(Personnage victime)
+    {
+    }
+
+    public override void copy(Effet ef)
+    {
+        EffetDegat e = (EffetDegat)ef;
+        styleEffect = e.styleEffect;
+        timeEffect = e.timeEffect;
+        duree = e.duree;
+        image = e.image;
+        pdd=e.pdd;
         //return new EffetDegat();
     }
 }

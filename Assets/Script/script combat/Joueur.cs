@@ -7,6 +7,7 @@ public class Joueur : Personnage
     // Start is called before the first frame update
     void Start()
     {
+        equipementControlleur = GetComponent<EquipementControlleur>();
         loadPlayer();
     }
     public void move(List<Case> chemin)
@@ -16,7 +17,14 @@ public class Joueur : Personnage
 
     }
 
-    
+    public void equipItem(ItemEquipement item)
+    {
+        equipementControlleur.Equip(item);
+    }
+    public void retireItem(ItemEquipement item)
+    {
+        equipementControlleur.Desequipe(item);
+    }
 
     
     // Update is called once per frame
@@ -24,18 +32,10 @@ public class Joueur : Personnage
     {
         
     }
-    public bool lanceSort(Sort s)
-    {
-        if (s.cout <= pa)
-        {
-            pa= pa - s.cout;
-            return true;
-
-        }
-        return false;
-    }
+    
     public override void recoitAttaque(int degat)
     {
+
         base.recoitAttaque(degat);
         pdv = pdv - degat;
         

@@ -6,8 +6,6 @@ using UnityEngine.U2D;
 public class LoaderCombat : MonoBehaviour
 {
     public static LoaderCombat instance = null;
-    public GameObject controleur;
-    public List<GameObject> joueurs;
     // Start is called before the first frame 
     private Camera _camera;
     void Start()
@@ -19,10 +17,6 @@ public class LoaderCombat : MonoBehaviour
         else
         {
             Destroy(gameObject);
-        }
-        if (ControleurCombat.instance == null)
-        {
-            Instantiate(controleur);
         }
         setResolutionPixel(Screen.width, Screen.height);
 

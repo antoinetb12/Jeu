@@ -9,25 +9,24 @@ public abstract class Effet : MonoBehaviour
     public int duree;
     public GameObject image;
     private int tourInstancie = 0;
-
-
+    private GameObject instanceImage;
+    private Case c;
     private Personnage lanceur;
     private Personnage victime;
     public int TourInstancie { get => tourInstancie; set => tourInstancie = value; }
     public Personnage Lanceur { get => lanceur; set => lanceur = value; }
     public Personnage Victime { get => victime; set => victime = value; }
+    public Case C { get => c; set => c = value; }
+    public GameObject InstanceImage { get => instanceImage; set => instanceImage = value; }
 
     public abstract void applyEffect();
     public abstract void applyEffect(Personnage victime);
-    protected Effet(StyleEffect styleEffect, TimeEffect timeEffect, int duree,GameObject image)
-    {
-        this.styleEffect = styleEffect;
-        this.timeEffect = timeEffect;
-        this.duree = duree;
-        this.image = image;
-    }
+    public abstract void cancelEffect();
 
-    public abstract Effet copy();
+    public abstract void cancelEffect(Personnage victime);
+
+    public abstract void copy(Effet e);
+    public abstract void addComponent(GameObject g);
 }
 public enum StyleEffect
 {

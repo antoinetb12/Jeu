@@ -5,7 +5,7 @@ using UnityEngine;
 public class GestionAffichageSort :MonoBehaviour
 {
     public Joueur j;
-    private List<GameObject> sorts=new List<GameObject>();
+    private Dictionary<Sort,GameObject> sorts=new Dictionary<Sort,GameObject>();
     // Start is called before the first frame update
     public void lanceSort()
     {
@@ -14,18 +14,38 @@ public class GestionAffichageSort :MonoBehaviour
     {
         for(int i=0; i < j.Sorts.Count; i++)
         {
+            
             GameObject nobj = (GameObject)GameObject.Instantiate(j.Sorts[i].gameObject);
 
             nobj.transform.position = new Vector2(30, -(10+i));
             nobj.transform.localScale = new Vector3(1f, 1f, 1f);
-            sorts.Add(nobj);
+            sorts.Add(j.Sorts[i],nobj);
+            j.Sorts[i].Detenteur = j;
+            if (!j.Sorts[i].disponible(j))
+            {
+                nobj.GetComponent<Renderer>().material.color = Color.red;
+            }
+        }
+    }
+    public void UpdateAffichage()
+    {
+        if (j != null &&  sorts.Count!=0) { 
+            foreach(Sort s in j.Sorts)
+            {
+                Debug.Log(s.name + "");
+                if (!s.disponible(j))
+                {
+                    sorts[s].GetComponent<Renderer>().material.color = Color.red;
+                }
+            }
         }
     }
     public void clear()
     {
-        foreach(GameObject g in sorts)
+        foreach(GameObject g in sorts.Values)
         {
             Destroy(g);
         }
+        sorts.Clear();
     }
 }

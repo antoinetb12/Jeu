@@ -29,7 +29,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6148375148661351487}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -56,6 +56,7 @@ SpriteRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -104,11 +105,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nom: ennemi1
-  pdv: 20
+  pdv: 100
   vitesse: 3
   niveau: 0
   paOrigine: 6
   pmOrigine: 3
+  caracteristiqueFeu: 5
+  caracteristiqueEau: 5
+  caracteristiqueVent: 5
+  caracteristiqueTerre: 5
+  resistance: 0
   sortsG:
   - {fileID: 4305176178120565689, guid: 13aa51f6f3244944a8fa2cd2cf417382, type: 3}
   damageText: {fileID: 7124486619601633626, guid: b0a3b39d29c88904cb0b16065f2194dd,
@@ -131,7 +137,7 @@ Animator:
   m_GameObject: {fileID: 6148375148661351487}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 6105a8801e2e7ec44bc960a39588ca54, type: 2}
+  m_Controller: {fileID: 9100000, guid: 3f91ccc83710e0140844bbc6f2ff40a4, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

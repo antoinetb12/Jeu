@@ -97,7 +97,7 @@ public class Ennemi : Personnage
         Case startNode = grid[Mathf.RoundToInt(-transform.position.y), Mathf.RoundToInt(transform.position.x)];
         Case targetNode = grid[Mathf.RoundToInt(-jChoisi.transform.position.y), Mathf.RoundToInt(jChoisi.transform.position.x)];
         Sort s = Sorts[0];
-        if ( GetDistance(startNode, targetNode) <= s.range)
+        if (GetDistance(startNode, targetNode) <= s.range && s.cout <= pa)
         {
             GetComponent<Animator>().SetTrigger("attaque1");
             jChoisi.recoitAttaque(s.pdd);

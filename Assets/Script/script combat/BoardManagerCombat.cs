@@ -14,6 +14,7 @@ public class BoardManagerCombat : MonoBehaviour
     private List<Vector3> gridPositions = new List<Vector3>();
     public GameObject ligne;
 
+
     // Start is called before the first frame update
     void Start()
     {

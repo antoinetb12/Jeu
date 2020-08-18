@@ -8,10 +8,19 @@ public class SettingsCanvas : MonoBehaviour
 {
     // Start is called before the first frame update
     public GameObject settingsMenu;
+    public GameObject InventaireMenu;
 
+    public void afficheInventaire()
+    {
+        InventaireControlleur.instance.displayInventaire();
+    }
     public void afficheSettingsMenu()
     {
         settingsMenu.SetActive(true);
+    }
+    public void closeInventaire()
+    {
+        InventaireControlleur.instance.closeInventaire();
     }
    public void closeSettingsMenu()
     {

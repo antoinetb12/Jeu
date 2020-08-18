@@ -51,8 +51,12 @@ MonoBehaviour:
   range: 20
   cout: 1
   besoinLdv: 0
+  cooldown: 2
   rangeMin: 1
-  rayonAction: {fileID: 0}
+  tourAvantUtilisation: 1
+  niveau: 1
+  typeSort: 0
+  rayonAction: {fileID: 7580965972468752358}
   effet:
   - {fileID: 4305176178120565689, guid: 0cea5529cfc43c44694697d910dcbabb, type: 3}
 --- !u!212 &4305176178120565690

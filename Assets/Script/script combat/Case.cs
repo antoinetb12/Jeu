@@ -2,8 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class Case : MonoBehaviour
+public class Case : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler,IPointerExitHandler
 {
     public string nom;
     public bool mur;
@@ -35,26 +36,14 @@ public class Case : MonoBehaviour
 
     //Get the GameObject’s mesh renderer to access the GameObject’s material and color
     Renderer m_Renderer;
-    void OnMouseOver()
-    {
-        ControleurCombat.instance.hover(this);
-        
-        //If your mouse hovers over the GameObject with the script attached, output this message
-        //Debug.Log("Mouse is over GameObject."+ m_Renderer.material.color + "," + m_MouseOverColor);
-    }
+
     public void changeRed()
     {
         initRenderer();
         m_Renderer.material.color = Color.red;
     }
 
-    void OnMouseExit()
-    {
-        // Reset the color of the GameObject back to normal
-        m_Renderer.material.color = lastColor;
-        ControleurCombat.instance.exitCase(this);
-       
-    }
+
     public void exit()
     {
         m_Renderer.material.color = lastColor;
@@ -75,10 +64,7 @@ public class Case : MonoBehaviour
     {
         m_Renderer.material.color = color;
     }
-    private void OnMouseUp()
-    {
-        ControleurCombat.instance.click(this);
-    }
+
     public void setVariable(int x, int y)
     {
         this.x = x;
@@ -137,5 +123,19 @@ public class Case : MonoBehaviour
         return c.x == this.x && c.y == this.y;
     }
 
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        ControleurCombat.instance.click(this);
+    }
 
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        m_Renderer.material.color = lastColor;
+        ControleurCombat.instance.exitCase(this);
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        ControleurCombat.instance.hover(this);
+    }
 }

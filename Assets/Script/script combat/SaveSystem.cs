@@ -32,12 +32,38 @@ public static class SaveSystem
             return null;
         }
     }
+    public static void SaveInventaire(List<Item> items)
+    {
+        BinaryFormatter formatter = new BinaryFormatter();
+        string path = Application.persistentDataPath + "/inventaire.fun";
+        FileStream stream = new FileStream(path, FileMode.Create);
+        formatter.Serialize(stream, items);
+        stream.Close();
+    }
+    public static List<Item> LoadInventaire()
+    {
+        string path = Application.persistentDataPath + "/inventaire.fun";
+        Debug.Log("load ici : " + path);
+
+        if (File.Exists(path))
+        {
+            BinaryFormatter formatter = new BinaryFormatter();
+            FileStream stream = new FileStream(path, FileMode.Open);
+            List<Item> data = formatter.Deserialize(stream) as List<Item>;
+            stream.Close();
+            return data;
+        }
+        else
+        {
+            return null;
+        }
+    }
     public static void SaveProgression(List<string> personnagesNames, int niveauAtteint)
     {
         BinaryFormatter formatter = new BinaryFormatter();
         string path = Application.persistentDataPath + "/gamesInfo.fun";
         FileStream stream = new FileStream(path, FileMode.Create);
-        ProgressionData data = new ProgressionData(personnagesNames,niveauAtteint);
+        ProgressionData data = new ProgressionData(personnagesNames, niveauAtteint);
         formatter.Serialize(stream, data);
         stream.Close();
     }

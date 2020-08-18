@@ -12,6 +12,12 @@ public abstract class Personnage : MonoBehaviour
     protected int pa;
     public int pmOrigine = 3;
     protected int pm;
+    protected int dommage = 1;
+    public int caracteristiqueFeu = 5;
+    public int caracteristiqueEau = 5;
+    public int caracteristiqueVent = 5;
+    public int caracteristiqueTerre = 5;
+    public int resistance = 0;
     public List<GameObject> sortsG;
     private List<Sort> sorts = new List<Sort>();
     public GameObject damageText;
@@ -19,8 +25,12 @@ public abstract class Personnage : MonoBehaviour
     public DataToSaveForPlayer dataToSaveForPlayer;
     public List<Effet> effetLance = new List<Effet>();
     public List<Effet> effetsRecu = new List<Effet>();
+    private List<ItemEquipement> equipements;
+    protected EquipementControlleur equipementControlleur;
 
     public List<Sort> Sorts { get => sorts; set => sorts = value; }
+    public int Dommage { get => dommage; set => dommage = value; }
+
 
     public void initialise(Personnage p)
     {
@@ -28,10 +38,17 @@ public abstract class Personnage : MonoBehaviour
         this.vitesse = p.vitesse;
         this.niveau = p.niveau;
     }
-    public void initPaPm()
+    public void debutTour()
     {
         this.pm = this.pmOrigine;
         this.pa = this.paOrigine;
+        foreach(Sort s in Sorts)
+        {
+            if (s.tourAvantUtilisation > 0)
+            {
+            s.tourAvantUtilisation--;
+            }
+        }
     }
     public void setPm(int pm)
     {
@@ -49,11 +66,21 @@ public abstract class Personnage : MonoBehaviour
     {
         return pa;
     }
+    public bool lanceSort(Sort s)
+    {
+        if (s.cout <= pa)
+        {
+            pa = pa - s.cout;
+            s.tourAvantUtilisation = s.cooldown;
+            return true;
+
+        }
+        return false;
+    }
     public void loadPlayer()
     {
         Debug.Log("essaie de load depuis perso");
         DataToSaveForPlayer data = SaveSystem.LoadPlayer(this.nom);
-        Debug.Log(data);
         if (data != null)
         {
             pdv = data.pdv;
