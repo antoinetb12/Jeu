@@ -28,9 +28,11 @@ public class InventaireControlleur : MonoBehaviour
             Destroy(gameObject);
         }
        
-       inventaire = new List<Item>(slot.Count);
+       inventaire = new List<Item>();
         inventaireGameObject.SetActive(false);
-        Item item = getBaseItems("epeeMagique");
+        Item item = getBaseItems("epeeMagique"); 
+       inventaire.Add(getBaseItems("bottes1"));
+
         inventaire.Add(item);
         item = getBaseItems("test");
         inventaire.Add(item);
@@ -57,6 +59,7 @@ public class InventaireControlleur : MonoBehaviour
     public void displayInventaire()
     {
         inventaireGameObject.SetActive(true);
+        inventaireGameObject.transform.SetAsLastSibling();
         Image image;
         Text text;
         SlotScript slotScript;
@@ -64,7 +67,7 @@ public class InventaireControlleur : MonoBehaviour
         //TODO gestion si inventaire plus grand que la page 1
         for (int i = 0; i < slot.Count; i++)
         {
-            if (inventaire[i] != null)
+            if (i<inventaire.Count )
             {
                 slotScript = slot[i].GetComponent<SlotScript>();
                 slotScript.item = inventaire[i];
@@ -75,6 +78,22 @@ public class InventaireControlleur : MonoBehaviour
                 text = slot[i].transform.GetChild(1).GetComponent<Text>();
                 text.color = new Color(1, 1, 1, 1);
                 text.text = inventaire[i].nombreStock.ToString();
+            }
+            else
+            {
+                slotScript = slot[i].GetComponent<SlotScript>();
+                slotScript.item = null;
+                image = slot[i].transform.GetChild(0).GetComponent<Image>();
+                Color color = image.color;
+                color.a = 0;
+                image.color = color;
+                image.sprite = null;
+
+                text = slot[i].transform.GetChild(1).GetComponent<Text>();
+                color = text.color;
+                color.a = 0;
+                text.color = color;
+                text.text = null;
             }
         }
     }
@@ -106,6 +125,7 @@ public class InventaireControlleur : MonoBehaviour
     public void addItem(Item item)
     {
         Item it = inventaire.Find(ite => item.Equals(ite));
+        item.toString();
         if (it == null)
         {
             inventaire.Add(item);

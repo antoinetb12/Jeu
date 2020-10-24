@@ -8,7 +8,7 @@ public class Ennemi : Personnage
     public List<Joueur> joueurs;
     private Case[,] grid;
     private Joueur jChoisi=null;
-
+    //TODO instancier chaque sort
     // Start is called before the first frame update
     void Start()
     {

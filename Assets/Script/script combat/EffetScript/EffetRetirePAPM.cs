@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EffetPAPM : Effet
+public class EffetRetirePAPM : Effet
 {
     public int pa;
     public int pm;
@@ -29,11 +29,11 @@ public class EffetPAPM : Effet
     }
     public override void addComponent(GameObject g)
     {
-        g.AddComponent<EffetPAPM>();
+        g.AddComponent<EffetRetirePAPM>();
     }
     public override void copy(Effet ef)
     {
-        EffetPAPM e = (EffetPAPM)ef;
+        EffetRetirePAPM e = (EffetRetirePAPM)ef;
         styleEffect = e.styleEffect;
         timeEffect = e.timeEffect;
         duree = e.duree;

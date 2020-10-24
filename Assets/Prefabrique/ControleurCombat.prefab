@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 2169217847718329215}
   - component: {fileID: 2169217847718329184}
   - component: {fileID: 2169217847718329185}
+  - component: {fileID: 1576825134}
   m_Layer: 0
   m_Name: ControleurCombat
   m_TagString: Untagged
@@ -27,7 +28,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2169217847718329186}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 1.8708086, y: -1.2383151, z: -221.13837}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -99,6 +100,7 @@ MonoBehaviour:
   itemPossible:
   - {fileID: 11400000, guid: ee1eaa41ec40a314b9077d8959d91019, type: 2}
   - {fileID: 11400000, guid: a50a0980a1f6b7643ab708eef97acd41, type: 2}
+  - {fileID: 11400000, guid: 70fb468d51da80048aaa764b07f38e33, type: 2}
   slot:
   - {fileID: 0}
   - {fileID: 0}
@@ -149,3 +151,17 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   inventaireGameObject: {fileID: 0}
+  listPersonnageScript: {fileID: 0}
+--- !u!114 &1576825134
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2169217847718329186}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32d3f41b718a1604db71fd0c68e52d58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bottes: {fileID: 0}

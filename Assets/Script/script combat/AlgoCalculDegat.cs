@@ -7,6 +7,10 @@ public class AlgoCalculDegat
     // Start is called before the first frame update
     public static int degatPresume(Personnage lanceur, Sort s)
     {
+        if (s.pdd == 0)
+        {
+            return 0;
+        }
         int degat = s.pdd + lanceur.Dommage;
         switch (s.typeSort)
         {

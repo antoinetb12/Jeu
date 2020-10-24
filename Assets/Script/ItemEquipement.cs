@@ -18,8 +18,10 @@ public class ItemEquipement : Item
     public TypeEquipement typeEquipement;
     [System.NonSerialized()]
     public AnimationClip animation;
+    [System.NonSerialized()]
+    public Sprite itemSpriteOnPerso;
 
-    public ItemEquipement(string itemName, Sprite itemSprite, TypeObjet typeObjet,string description, int po, int feu, int eau, int terre, int vent, int dommage, int pdv, int pm, int pa, int resistance, int initiative, TypeEquipement typeEquipement, AnimationClip animation) : base(itemName, itemSprite, typeObjet, description)
+    public ItemEquipement(string itemName, Sprite itemSprite, TypeObjet typeObjet,string description, int po, int feu, int eau, int terre, int vent, int dommage, int pdv, int pm, int pa, int resistance, int initiative, TypeEquipement typeEquipement, AnimationClip animation,Sprite itemSpriteOnPerso) : base(itemName, itemSprite, typeObjet, description)
     {
         if (typeObjet != TypeObjet.Equipement)
         {
@@ -38,6 +40,7 @@ public class ItemEquipement : Item
         this.initiative = initiative;
         this.typeEquipement = typeEquipement;
         this.animation = animation;
+        this.itemSpriteOnPerso = itemSpriteOnPerso;
     }
 
     public override bool Equals(object obj)
@@ -77,7 +80,7 @@ public class ItemEquipement : Item
 
     public override void toString()
     {
-        Debug.Log("" + itemName + ", " + feu);
+        Debug.Log("" + itemName + ", " + nombreStock);
     }
 
     public override string ToString()

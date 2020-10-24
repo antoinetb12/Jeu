@@ -5,7 +5,7 @@ using UnityEngine;
 public class Joueur : Personnage
 {
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         equipementControlleur = GetComponent<EquipementControlleur>();
         loadPlayer();

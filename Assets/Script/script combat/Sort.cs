@@ -17,9 +17,14 @@ public class Sort : MonoBehaviour, IPointerClickHandler
     public int niveau=1;
     public TypeSort typeSort=TypeSort.feu;
     public RayonAction rayonAction;
-    public List<GameObject> effet;
+    public Effet effet;
     private Personnage detenteur;
 
+    private void Awake()
+    {
+        Debug.Log("on laod effet");
+        effet = GetComponent<Effet>();
+    }
     public Personnage Detenteur { get => detenteur; set => detenteur = value; }
 
     // Start is called before the first frame update
@@ -42,6 +47,7 @@ public class Sort : MonoBehaviour, IPointerClickHandler
     }
     public bool disponible(Personnage j)
     {
+        Debug.Log(name + ", " + tourAvantUtilisation);
         return j.getPa() >= cout && tourAvantUtilisation == 0;
     }
 }

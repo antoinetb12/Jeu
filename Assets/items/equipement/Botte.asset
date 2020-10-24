@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Botte
   m_EditorClassIdentifier: 
   itemName: bottes1
-  itemSprite: {fileID: 21300000, guid: e2adbf915c0abfa41a4c1d2c1c5ce394, type: 3}
+  itemSprite: {fileID: 21300000, guid: d4c17d43c477c4b3291a2348ae5be39f, type: 3}
   typeObjet: 1
   description: test de botte
   po: 1
@@ -29,3 +29,4 @@ MonoBehaviour:
   initiative: 11
   typeEquipement: 4
   animation: {fileID: 7400000, guid: 2bc406b50f24f014e8e0cf5256240aaf, type: 2}
+  itemSpriteOnPerso: {fileID: 21300000, guid: e2adbf915c0abfa41a4c1d2c1c5ce394, type: 3}

@@ -22,15 +22,13 @@ public class EquipementScript : MonoBehaviour
         animator.runtimeAnimatorController = AnimatorOverrideController;
     }
 
+
     public void equip(ItemEquipement item)
     {
         spriteRenderer.color = Color.white;
-        Debug.Log(AnimatorOverrideController);
-        Debug.Log("equip");
-        spriteRenderer.sprite = item.itemSprite;
+        spriteRenderer.sprite = item.itemSpriteOnPerso;
 
         AnimatorOverrideController["testT"] = item.animation;
-        Debug.Log(AnimatorOverrideController.overridesCount);
         // https://www.youtube.com/watch?v=wyyuYX25tBU&list=PLX-uZVK_0K_6JEecbu3Y-nVnANJznCzix&index=84
     }
     public void Desequip()

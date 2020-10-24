@@ -18,17 +18,7 @@ public class BoardManagerCombat : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-      /*
-        for (int x = 0; x < tailleX; x++)
-        {
-            for (int y = 0; y < tailleY; y++)
-            {
-                //Boolean isWall = ((y % 2) != 0) && (rnd.Next (0, 10) != 8);
-                grid[x, y] = new Case(x, y, false);
-                
-            }
-        }
-        boardSetup();*/
+
     }
 
     // Update is called once per frame
@@ -207,7 +197,7 @@ public class BoardManagerCombat : MonoBehaviour
             {
                 //Debug.Log("position :   , " + p.posX + "," + p.posY);
                // casesPossible.Add(new Position(p.posX, p.posY, 1, p.precedent));
-               if(GetDistance(grid[(int)depart.y, (int)depart.x], grid[p.posY, p.posX]) > s.rangeMin)
+               if(GetDistance(grid[(int)depart.y, (int)depart.x], grid[p.posY, p.posX]) >= s.rangeMin)
                 {
                     if(s.besoinLdv  && tracerSegment(grid[(int)depart.y, (int)depart.x], grid[p.posY, p.posX]))
                      {
@@ -219,6 +209,10 @@ public class BoardManagerCombat : MonoBehaviour
                     }
                 }
             }
+        }
+        if (s.rangeMin == 0)
+        {
+            casesPossible.Add(new Position(departc.getX(), departc.getY(), 0, departc));
         }
         return casesPossible;
     }

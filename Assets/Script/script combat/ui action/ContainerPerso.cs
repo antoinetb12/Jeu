@@ -7,10 +7,13 @@ public class ContainerPerso : MonoBehaviour
     [System.NonSerializedAttribute]
     public Personnage joueur;
     public Text nom;
+    public GameObject equipementMenu;
     // Start is called before the first frame update
     public void DisplayEquipementPerso()
     {
-        Debug.Log("display inv de " + joueur);
+        equipementMenu.SetActive(true);
+        equipementMenu.transform.SetAsLastSibling();
+        joueur.DisplayEquipement();
     }
     public void setJoueur(Personnage j)
     {

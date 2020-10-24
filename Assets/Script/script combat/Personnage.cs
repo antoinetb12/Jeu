@@ -25,13 +25,39 @@ public abstract class Personnage : MonoBehaviour
     public DataToSaveForPlayer dataToSaveForPlayer;
     public List<Effet> effetLance = new List<Effet>();
     public List<Effet> effetsRecu = new List<Effet>();
-    private List<ItemEquipement> equipements;
+    protected List<ItemEquipement> equipements=new List<ItemEquipement>();
     protected EquipementControlleur equipementControlleur;
 
     public List<Sort> Sorts { get => sorts; set => sorts = value; }
     public int Dommage { get => dommage; set => dommage = value; }
 
-
+    private void Start()
+    {
+        equipementControlleur = GetComponent<EquipementControlleur>();
+        Debug.Log("yolo start");
+    }
+    public void DisplayEquipement()
+    {
+        Debug.Log(equipementControlleur);
+        EquipementSlotControlleur.instance.Display(equipements, this, equipementControlleur);
+    }
+    public void removeItem(ItemEquipement item)
+    {
+        equipements.Remove(item);
+        DisplayEquipement();
+    }
+    public void addItem(ItemEquipement item)
+    {
+       if(equipements.Find(items => items.typeEquipement == item.typeEquipement) != null)
+        {
+            throw new System.Exception("euh il y a deja un item de ce type dans l'inv");
+        }
+        else
+        {
+            equipements.Add(item);
+            DisplayEquipement();
+        }
+    }
     public void initialise(Personnage p)
     {
         this.pdv = p.pdv;
@@ -46,7 +72,8 @@ public abstract class Personnage : MonoBehaviour
         {
             if (s.tourAvantUtilisation > 0)
             {
-            s.tourAvantUtilisation--;
+                Debug.Log(s.name + " , " + s.tourAvantUtilisation);
+                s.tourAvantUtilisation--;
             }
         }
     }
@@ -91,12 +118,13 @@ public abstract class Personnage : MonoBehaviour
             {
                 Debug.Log("data to save " + s.niveau);  
                 GameObject g = (GameObject)Resources.Load(s.path, typeof(GameObject));
-                Sort sort=g.GetComponent<Sort>();
+                GameObject sortInstance = Instantiate(g);
+                Sort sort= sortInstance.GetComponent<Sort>();
                 sort.niveau = s.niveau;
                 Debug.Log("sort 1 : " + sort.nom + ", " + sort.niveau);
 
                 Sorts.Add(sort);
-                Sort sort2 = g.GetComponent<Sort>();
+                Sort sort2 = sortInstance.GetComponent<Sort>();
                 Debug.Log("sort 2 : "+sort2.nom + ", " + sort2.niveau);
 
 
@@ -107,7 +135,8 @@ public abstract class Personnage : MonoBehaviour
         {
             foreach(GameObject g in sortsG)
             {
-                sorts.Add(g.GetComponent<Sort>());
+                GameObject sortInstance = Instantiate(g);
+                sorts.Add(sortInstance.GetComponent<Sort>());
 
             }
         }
@@ -126,7 +155,7 @@ public abstract class Personnage : MonoBehaviour
         
         GameObject currentText = Instantiate(damageText);
 
-        currentText.transform.parent = transform;
+        currentText.transform.SetParent(transform);
         currentText.transform.localPosition = damageText.transform.localPosition;
         currentText.GetComponent<Text>().text ="-"+ degat;
         Destroy(currentText, 1.2f);

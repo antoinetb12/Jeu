@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 4305176178120565690}
   - component: {fileID: 2033889582917619190}
   - component: {fileID: -7050725846191436235}
+  - component: {fileID: -9218596695986495809}
   m_Layer: 0
   m_Name: Coup
   m_TagString: Untagged
@@ -51,11 +52,13 @@ MonoBehaviour:
   range: 1
   cout: 3
   besoinLdv: 1
+  cooldown: 3
   rangeMin: 1
+  tourAvantUtilisation: 0
   niveau: 2
+  typeSort: 0
   rayonAction: {fileID: 0}
-  effet:
-  - {fileID: 4305176178120565689, guid: f83f19457aab777489d5d7b33b98affb, type: 3}
+  effet: {fileID: 0}
 --- !u!212 &4305176178120565690
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -71,6 +74,7 @@ SpriteRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -144,3 +148,19 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &-9218596695986495809
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4305176178120565689}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2b7302a8caf6e74b9aefe91e5b4b396, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  styleEffect: 1
+  timeEffect: 0
+  duree: 1
+  image: {fileID: 3211976806098059076, guid: d542072d2cb55f2419b64c6b871ef0ca, type: 3}

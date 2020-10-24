@@ -26,6 +26,7 @@ public class ControleurCombat : MonoBehaviour
     Case caseHover = null;
     List<Position> rayonAction = null;
     List<Personnage> personnages = new List<Personnage>();
+    private int progression;
     // Start is called before the first frame update
     void Start()
     {
@@ -97,14 +98,20 @@ public class ControleurCombat : MonoBehaviour
         {
             if (p.lanceSort(sort))
             {
-                List<Effet> effetsJoueur = effectControlleur.getEffets(sort.effet, StyleEffect.Personnage);
-                List<Effet> effetsCase = effectControlleur.getEffets(sort.effet, StyleEffect.Case);
+               
                 foreach (Case ca in boardManager.getAllCase(rayonAction))
                 {
-                    effectControlleur.ajouteEffetCase(effetsCase, ca,personnages[indexJoueur]);
+                    if (sort.effet.styleEffect == StyleEffect.Case)
+                    {
+                        effectControlleur.ajouteEffetCase(sort.effet, ca, personnages[indexJoueur]);
+                    }
                     if (ca.perso != null)
                     {
-                        effectControlleur.ajouteEffetJoueur(effetsJoueur, ca, personnages[indexJoueur]);
+                        if (sort.effet.styleEffect == StyleEffect.Personnage)
+                        {
+                            effectControlleur.ajouteEffetJoueur(sort.effet, ca, personnages[indexJoueur]);
+                        }
+                        
                         int degatPresume = AlgoCalculDegat.degatPresume(p, sort);
 
                         ca.perso.recoitAttaque(AlgoCalculDegat.calculDegat(ca.perso, sort.typeSort, degatPresume));
@@ -243,7 +250,6 @@ public class ControleurCombat : MonoBehaviour
         inventaireControlleur.setPersonnage(personnages);
         indexJoueur = 0;
         joueurc = joueursCIntanciate[indexJoueur];
-        
         initEnnemies();
         DetermineOrdre();
 
@@ -414,7 +420,8 @@ public class ControleurCombat : MonoBehaviour
         }
         else if (!encoreEnVie(1))
         {
-            Debug.Log("fin de ce niveau");
+            boardManager.afficheMap(listMap[0]);
+            initEnnemies();
         }
     }
     public void GameOver()

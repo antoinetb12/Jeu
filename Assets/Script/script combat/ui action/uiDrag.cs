@@ -1,8 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-public class uiDrag : MonoBehaviour
+using UnityEngine.EventSystems;
+public class uiDrag : MonoBehaviour, IPointerDownHandler
 {
     float offsetX;
     float offsetY;
@@ -16,5 +16,10 @@ public class uiDrag : MonoBehaviour
     {
         transform.position = new Vector3(offsetX + Input.mousePosition.x, offsetY + Input.mousePosition.y);
         //Debug.Log(offsetY);
+    }
+
+    public void OnPointerDown(PointerEventData eventData)
+    {
+        transform.SetAsLastSibling();
     }
 }

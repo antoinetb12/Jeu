@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 4305176178120565690}
   - component: {fileID: -7050725846191436235}
   - component: {fileID: 7936470341563886901}
+  - component: {fileID: 8922188162328007157}
   m_Layer: 0
   m_Name: bdf
   m_TagString: Untagged
@@ -57,8 +58,7 @@ MonoBehaviour:
   niveau: 23
   typeSort: 0
   rayonAction: {fileID: 7936470341563886901}
-  effet:
-  - {fileID: 4305176178120565689, guid: 566745bb2bd727847875abc6f8b6fed5, type: 3}
+  effet: {fileID: 0}
 --- !u!212 &4305176178120565690
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -74,6 +74,7 @@ SpriteRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -148,3 +149,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rayon: 5
+--- !u!114 &8922188162328007157
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4305176178120565689}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a31b4c53c764e84abb41e9a7c2cc88d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  styleEffect: 0
+  timeEffect: 0
+  duree: 3
+  image: {fileID: 4362712041360857224, guid: efa2eb167a5bd324b841c983fe91c50f, type: 3}
+  pdd: 1
+  typeSort: 0

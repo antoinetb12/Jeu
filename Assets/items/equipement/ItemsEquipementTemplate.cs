@@ -17,9 +17,10 @@ public class ItemsEquipementTemplate : ItemTemplate
     public int initiative;
     public TypeEquipement typeEquipement;
     public AnimationClip animation;
+    public Sprite itemSpriteOnPerso;
     public override Item getItem()
     { 
-        return new ItemEquipement(itemName, itemSprite, typeObjet,description, po, feu, eau, terre, vent, dommage, pdv, pm, pa, resistance, initiative,typeEquipement, animation);
+        return new ItemEquipement(itemName, itemSprite, typeObjet,description, po, feu, eau, terre, vent, dommage, pdv, pm, pa, resistance, initiative,typeEquipement, animation, itemSpriteOnPerso);
     }
 }
 public enum TypeEquipement

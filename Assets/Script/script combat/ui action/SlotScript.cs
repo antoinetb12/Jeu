@@ -4,19 +4,19 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class SlotScript : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,IDragHandler,IEndDragHandler,IBeginDragHandler,IDropHandler,IPointerEnterHandler,IPointerExitHandler
+public class SlotScript : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,IDragHandler,IEndDragHandler,IBeginDragHandler
 {
-    public int index;
-    public Item item;
+    public Item item { get; set; }
     public DescriptionScript description;
+    public SlotType slotType;
     private GameObject image;
-    public bool drag=false;
 
     // Start is called before the first frame update
-    public void remove()
+    public virtual void remove()
     {
         InventaireControlleur.instance.removeItem(item);
     }
+
 
 
     public void OnPointerDown(PointerEventData eventData)
@@ -49,8 +49,7 @@ public class SlotScript : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
 
     public void OnEndDrag(PointerEventData eventData)
     {
-       //Destroy(image);
-        drag = false;
+       Destroy(image);
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -62,12 +61,11 @@ public class SlotScript : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
     public void OnBeginDrag(PointerEventData eventData)
     {
         
-        drag = true;
         if (item != null)
         {
             description.DesafficheDescription();
         }
-        image = (GameObject) Instantiate(transform.GetChild(0).GetComponent<Image>().gameObject,transform.position,Quaternion.identity, GameObject.Find("inventaire").transform);
+        image = (GameObject) Instantiate(transform.GetChild(0).GetComponent<Image>().gameObject,transform.position,Quaternion.identity, GameObject.Find("Canvas").transform);
         image.transform.localScale = new Vector3(1f, 1f, 1f);
         image.transform.position = Input.mousePosition;
         image.transform.localPosition = transform.localPosition;
@@ -78,19 +76,9 @@ public class SlotScript : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
 
     }
 
-    public void OnDrop(PointerEventData eventData)
-    {
-        SlotScript slot = eventData.pointerDrag.GetComponent<SlotScript>();
-        //this.item = slot.item;
-        
-    }
-
-    public void OnPointerEnter(PointerEventData eventData)
-    {
-        
-    }
-
-    public void OnPointerExit(PointerEventData eventData)
-    {
-    }
+   
+}
+public enum SlotType
+{
+    inventaire, Equipement
 }

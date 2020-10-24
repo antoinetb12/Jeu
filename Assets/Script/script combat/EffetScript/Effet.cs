@@ -34,5 +34,5 @@ public enum StyleEffect
 }
 public enum TimeEffect
 {
-    Debut,Fin
+    Debut,Constant,Fin
 }

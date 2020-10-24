@@ -10,6 +10,7 @@ public class DescriptionScript : MonoBehaviour
     public void AfficheDescription()
     {
         gameObject.SetActive(true);
+        gameObject.transform.SetAsLastSibling();
     }
     public void DesafficheDescription()
     {
