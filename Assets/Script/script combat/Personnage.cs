@@ -120,6 +120,7 @@ public abstract class Personnage : MonoBehaviour
                 GameObject g = (GameObject)Resources.Load(s.path, typeof(GameObject));
                 GameObject sortInstance = Instantiate(g);
                 Sort sort= sortInstance.GetComponent<Sort>();
+                sort.Detenteur = this;
                 sort.niveau = s.niveau;
                 Debug.Log("sort 1 : " + sort.nom + ", " + sort.niveau);
 
@@ -136,6 +137,8 @@ public abstract class Personnage : MonoBehaviour
             foreach(GameObject g in sortsG)
             {
                 GameObject sortInstance = Instantiate(g);
+                sortInstance.GetComponent<Sort>().Detenteur = this;
+
                 sorts.Add(sortInstance.GetComponent<Sort>());
 
             }

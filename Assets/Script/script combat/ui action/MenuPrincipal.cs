@@ -8,7 +8,11 @@ public class MenuPrincipal : MonoBehaviour
     // Start is called before the first frame update
     public void start()
     {
-        SceneManager.LoadScene(loadScene);
+        ChangeSceneService.instance.ChangeScene(loadScene);
+    }
+    public void nouvellePartie()
+    {
+        ChangeSceneService.instance.ChangeScene(loadScene,"nouvelle partie");
     }
     public void quitter()
     {

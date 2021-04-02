@@ -8,6 +8,7 @@ public class ControleurCombat : MonoBehaviour
     private BoardManagerCombat boardManager;
     private EffectControlleur effectControlleur;
     private InventaireControlleur inventaireControlleur;
+    public GameObject sortPanelControlleur;
     public List<GameObject> joueurs;
     public List<GameObject> ennemies;
     private List<GameObject> joueursIntanciate = new List<GameObject>();
@@ -41,6 +42,7 @@ public class ControleurCombat : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
         boardManager = GetComponent<BoardManagerCombat>();
         effectControlleur = GetComponent<EffectControlleur>();
         inventaireControlleur = GetComponent<InventaireControlleur>();
@@ -48,7 +50,7 @@ public class ControleurCombat : MonoBehaviour
         
         //initGame();
         loadSave();
-
+        ChangeSceneService.instance.finChargement();
     }
     
 
@@ -59,7 +61,7 @@ public class ControleurCombat : MonoBehaviour
     public void selectionneSort(Sort s)
     {
         Sort sort = joueurc.getSort(s);
-        if (!deplacement && sort.disponible(joueurc))
+        if (!deplacement && sort.disponible())
         {
             if (sortSelectionne != null && sortSelectionne.nom == sort.nom)
             {
@@ -132,7 +134,8 @@ public class ControleurCombat : MonoBehaviour
                     }
                 }
             }
-            gestionAffichageSort.UpdateAffichage();
+            sortPanelControlleur.GetComponent<SortPanelControlleur>().UpdateAffichage();
+           // gestionAffichageSort.UpdateAffichage();
             desSelectionneSort();
 
         }
@@ -379,7 +382,8 @@ public class ControleurCombat : MonoBehaviour
         }
         else
         {
-            gestionAffichageSort.UpdateAffichage();
+            sortPanelControlleur.GetComponent<SortPanelControlleur>().UpdateAffichage();
+           // gestionAffichageSort.UpdateAffichage();
             gereDeplacementPossible();
         }
 
@@ -407,7 +411,8 @@ public class ControleurCombat : MonoBehaviour
             {
                 indexJoueur = 0;
             }
-            gestionAffichageSort.clear();
+            sortPanelControlleur.GetComponent<SortPanelControlleur>().desafficheListSort();
+            //gestionAffichageSort.clear();
             reinitialiseAffichageDeplacement();
             debutTour();
         }
@@ -420,8 +425,9 @@ public class ControleurCombat : MonoBehaviour
         }
         else if (!encoreEnVie(1))
         {
-            boardManager.afficheMap(listMap[0]);
-            initEnnemies();
+            /*boardManager.afficheMap(listMap[0]);
+            initEnnemies();*/
+            ChangeSceneService.instance.ChangeScene("Map");
         }
     }
     public void GameOver()
@@ -455,8 +461,9 @@ public class ControleurCombat : MonoBehaviour
         if (p.getStatusPersonnage() == 0)
         {
             joueurc = (Joueur)p;
-            gestionAffichageSort.j = joueurc;
-            gestionAffichageSort.afficheSort();
+            sortPanelControlleur.GetComponent<SortPanelControlleur>().afficheSort(joueurc);
+            /*gestionAffichageSort.j = joueurc;
+            gestionAffichageSort.afficheSort();*/
             choisiSort = false;
             sortSelectionne = null;
             boardManager.reinitColor(positionAttaquable);

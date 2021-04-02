@@ -47,6 +47,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22343032111ec2d4d8f8d968a4e82537, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sortPanelControlleur: {fileID: 0}
   joueurs:
   - {fileID: 3621213823060987773, guid: f902611549c78d140b7a13d24f58e24b, type: 3}
   ennemies:
@@ -165,3 +166,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bottes: {fileID: 0}
+  JoueurDisplay: {fileID: 0}
+  cameraa: {fileID: 0}

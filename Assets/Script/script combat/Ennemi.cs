@@ -18,6 +18,7 @@ public class Ennemi : Personnage
         }
         foreach (GameObject g in sortsG)
         {
+            g.GetComponent<Sort>().Detenteur = this;
             Sorts.Add(g.GetComponent<Sort>());
 
         }

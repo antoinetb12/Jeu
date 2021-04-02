@@ -14,16 +14,19 @@ public class Sort : MonoBehaviour, IPointerClickHandler
     public int cooldown = 2;
     public int rangeMin = 1;
     public int tourAvantUtilisation = 0;
+    public string description;
     public int niveau=1;
     public TypeSort typeSort=TypeSort.feu;
     public RayonAction rayonAction;
     public Effet effet;
+    public Sprite sprite;
     private Personnage detenteur;
 
     private void Awake()
     {
         Debug.Log("on laod effet");
         effet = GetComponent<Effet>();
+        print(effet);
     }
     public Personnage Detenteur { get => detenteur; set => detenteur = value; }
 
@@ -45,10 +48,10 @@ public class Sort : MonoBehaviour, IPointerClickHandler
         }
         return rayonAction.GetRayon(startPos, targetCase, grid, dimX, dimY);
     }
-    public bool disponible(Personnage j)
+    public bool disponible()
     {
         Debug.Log(name + ", " + tourAvantUtilisation);
-        return j.getPa() >= cout && tourAvantUtilisation == 0;
+        return detenteur.getPa() >= cout && tourAvantUtilisation == 0;
     }
 }
 public enum TypeSort

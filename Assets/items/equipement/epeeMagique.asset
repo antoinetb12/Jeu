@@ -27,3 +27,6 @@ MonoBehaviour:
   pa: 1
   resistance: 11
   initiative: 1
+  typeEquipement: 0
+  animation: {fileID: 0}
+  itemSpriteOnPerso: {fileID: 0}

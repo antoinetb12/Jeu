@@ -17,4 +17,7 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/2D Grid Based AI/Main.unity
     guid: 180b8d74dae8544d49ca8cbfb95e3289
+  - enabled: 1
+    path: Assets/Scenes/Map.unity
+    guid: ff8a8a412cee610469dbb9a7a3ec8182
   m_configObjects: {}
